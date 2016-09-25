@@ -9,7 +9,7 @@ Usage
 .. code-block:: bash 
    
     
-    Documentation for tastic can be found here: http://tastic.readthedocs.org/en/stable
+    Documentation for tastic can be found here: http://tastic-for-taskpaper.readthedocs.io/en/stable/
     
     Usage:
         tastic index [-s <pathToSettingsFile>]
@@ -21,7 +21,7 @@ Usage
 Documentation
 =============
 
-Documentation for tastic is hosted by `Read the Docs <http://tastic.readthedocs.org/en/stable/>`__ (last `stable version <http://tastic.readthedocs.org/en/stable/>`__ and `latest version <http://tastic.readthedocs.org/en/latest/>`__).
+Documentation for tastic is hosted by `Read the Docs <http://tastic-for-taskpaper.readthedocs.io/en/stable/>`__ (last `stable version <http://tastic-for-taskpaper.readthedocs.io/en/stable/>`__ and `latest version <http://tastic-for-taskpaper.readthedocs.io/en/latest/>`__).
 
 Installation
 ============

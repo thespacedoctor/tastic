@@ -1,7 +1,7 @@
 #!/usr/local/bin/python
 # encoding: utf-8
 """
-Documentation for tastic can be found here: http://tastic.readthedocs.org/en/stable
+Documentation for tastic can be found here: http://tastic-for-taskpaper.readthedocs.io/en/stable/
 
 Usage:
     tastic index [-s <pathToSettingsFile>]
