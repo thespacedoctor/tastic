@@ -112,185 +112,147 @@ class test_tastic():
         print doc.content
 
         # # DOCUMENT SEARCHES
-        # docSearches = doc.searches
-        # print docSearches
+        docSearches = doc.searches
+        print docSearches
 
+        # DOCUMENT TASKS
+        print "TASKS:"
+        docTasks = doc.tasks
+        print docTasks
+        print "\n\n"
 
-#         # DOCUMENT TASKS
-#         print "TASKS:"
-#         docTasks = doc.tasks
-#         print docTasks
-#         print "\n\n"
+        print "\n\n"
 
-
-#
-
-
-#         print "\n\n"
-
-
-#         print "GET PROJECT"
-#         archiveProject = doc.get_project("Archive")
-#         if archiveProject:
-#             print archiveProject.to_string()
-#         print "\n\n"
-
-#
-
-#
-
-#
+        print "GET PROJECT"
+        archiveProject = doc.get_project("Archive")
+        if archiveProject:
+            print archiveProject.to_string()
+        print "\n\n"
 
         return
 
-    # def test_projects_function(self):
+    def test_projects_function(self):
 
-    #     # DOCUMENT LEVEL METHODS AND PROPERTIES
-    #     # LOAD UP THE TASKPAPER FILE
-    #     taskpaperFile = pathToOutputDir + "/test.taskpaper"
-    #     doc = document(taskpaperFile)
+        # DOCUMENT LEVEL METHODS AND PROPERTIES
+        # LOAD UP THE TASKPAPER FILE
+        taskpaperFile = pathToOutputDir + "/test.taskpaper"
+        doc = document(taskpaperFile)
 
-    #     # PROJECT LEVEL METHODS AND PROPERTIES
-    #     # GET ALL THE PROJECT OBJECTS WITHIN THE DOCUMENT
-    #     docProjects = doc.projects
+        # PROJECT LEVEL METHODS AND PROPERTIES
+        # GET ALL THE PROJECT OBJECTS WITHIN THE DOCUMENT
+        docProjects = doc.projects
 
-    #     for p in docProjects:
+        for p in docProjects:
 
-    #         # PROJECT TITLE
-    #         print "TITLE:"
-    #         pTitle = p.title
-    #         print pTitle
-    #         print "\n\n"
+            # PROJECT TITLE
+            print "TITLE:"
+            pTitle = p.title
+            print pTitle
+            print "\n\n"
 
-    #         # PROJECT RAW CONTENT
-    #         print "RAW CONTENT:"
-    #         pRaw = p.raw_content
-    #         print pRaw
-    #         print "\n\n"
+            # PROJECT RAW CONTENT
+            print "RAW CONTENT:"
+            pRaw = p.raw_content
+            print pRaw
+            print "\n\n"
 
-    #         # PROJECT CONTENT
-    #         print "CONTENT:"
-    #         pContent = p.content
-    #         print pContent
-    #         print "\n\n"
+            # PROJECT CONTENT
+            print "CONTENT:"
+            pContent = p.content
+            print pContent
+            print "\n\n"
 
-    #         # PROJECT PROJECTS
-    #         print "SUBPROJECTS:"
-    #         subProjects = p.projects
-    #         print subProjects
-    #         print "\n\n"
+            # PROJECT PROJECTS
+            print "SUBPROJECTS:"
+            subProjects = p.projects
+            print subProjects
+            print "\n\n"
 
-    #         # PROJECT TASKS
-    #         print "TASKS:"
-    #         pTasks = p.tasks
-    #         print pTasks
-    #         print "\n\n"
+            # PROJECT TASKS
+            print "TASKS:"
+            pTasks = p.tasks
+            print pTasks
+            print "\n\n"
 
-    #         # PROJECT NOTES
-    #         print "NOTES:"
-    #         pNotes = p.notes
-    #         print pNotes
-    #         print "\n\n"
+            # PROJECT NOTES
+            print "NOTES:"
+            pNotes = p.notes
+            print pNotes
+            print "\n\n"
 
-    #         p.add_project(
-    #             "this is a subproject I added", "@with @tags")
-    #         p.add_project("and another added subproject:",
-    #                       ['@with', '@tags(data)'])
+            p.add_project(
+                "this is a subproject I added", "@with @tags")
+            p.add_project("and another added subproject:",
+                          ['@with', '@tags(data)'])
 
-    #         p.add_note("""Nullam id odio est. Vivamus eget nibh diam. Phasellus laoreet vel purus et pellentesque. Etiam condimentum, purus vitae finibus dignissim, metus felis aliquet leo, in bibendum lectus urna vel lectus. Nullam quis nunc vitae dolor posuere finibus sed in ex. Vestibulum eleifend imperdiet pretium. In in finibus nisi. Curabitur quis orci odio. Nullam ultrices interdum nibh, eget lacinia sapien vestibulum at. Nunc consequat posuere lectus, in scelerisque arcu ornare nec.""")
+            p.add_note("""Nullam id odio est. Vivamus eget nibh diam. Phasellus laoreet vel purus et pellentesque. Etiam condimentum, purus vitae finibus dignissim, metus felis aliquet leo, in bibendum lectus urna vel lectus. Nullam quis nunc vitae dolor posuere finibus sed in ex. Vestibulum eleifend imperdiet pretium. In in finibus nisi. Curabitur quis orci odio. Nullam ultrices interdum nibh, eget lacinia sapien vestibulum at. Nunc consequat posuere lectus, in scelerisque arcu ornare nec.""")
 
-    #         print "ADD TASKS"
-    #         p.add_task("this is a task I added to a subproject", "@with @tags")
-    #         p.add_task("and another added task added to a subproject",
-    #                    ['@with', '@tags(data)'])
-    #         print "\n\n"
+            print "ADD TASKS"
+            p.add_task("this is a task I added to a subproject", "@with @tags")
+            p.add_task("and another added task added to a subproject",
+                       ['@with', '@tags(data)'])
+            print "\n\n"
 
-    #         # PROJECT TAGS
-    #         print "TAGS:"
-    #         pTags = p.tags
-    #         print pTags
-    #         print "\n\n"
+            # PROJECT TAGS
+            print "TAGS:"
+            pTags = p.tags
+            print pTags
+            print "\n\n"
 
-    #     print "TIDY DOCUMENT"
-    #     doc.tidy()
-    #     print doc.content
-    #     print "\n\n"
+        print "TIDY DOCUMENT"
+        doc.tidy()
+        print doc.content
+        print "\n\n"
 
-    #     return
+        return
 
-    # def test_task_function(self):
+    def test_task_function(self):
 
-    #     # DOCUMENT LEVEL METHODS AND PROPERTIES
-    #     # LOAD UP THE TASKPAPER FILE
-    #     taskpaperFile = pathToOutputDir + "/test.taskpaper"
-    #     doc = document(taskpaperFile)
+        # DOCUMENT LEVEL METHODS AND PROPERTIES
+        # LOAD UP THE TASKPAPER FILE
+        taskpaperFile = pathToOutputDir + "/test.taskpaper"
+        doc = document(taskpaperFile)
 
-    #     # TASK LEVEL METHODS AND PROPERTIES
-    #     # GET ALL THE ROOT TASK OBJECTS WITHIN THE DOCUMENT
-    #     docTasks = doc.tasks
+        # TASK LEVEL METHODS AND PROPERTIES
+        # GET ALL THE ROOT TASK OBJECTS WITHIN THE DOCUMENT
+        docTasks = doc.tasks
 
-    #     for t in docTasks:
+        for t in docTasks:
 
-    #         # TASK TITLE
-    #         print "TITLE:"
-    #         tTitle = t.title
-    #         print tTitle
-    #         print "\n\n"
+            # TASK TITLE
+            print "TITLE:"
+            tTitle = t.title
+            print tTitle
+            print "\n\n"
 
-    #         # TASK RAW CONTENT
-    #         print "RAW CONTENT:"
-    #         tRaw = t.raw_content
-    #         print tRaw
-    #         print "\n\n"
+            # TASK RAW CONTENT
+            print "RAW CONTENT:"
+            tRaw = t.raw_content
+            print tRaw
+            print "\n\n"
 
-    #         # TASK CONTENT
-    #         print "CONTENT:"
-    #         tContent = t.content
-    #         print tContent
-    #         print "\n\n"
+            # TASK CONTENT
+            print "CONTENT:"
+            tContent = t.content
+            print tContent
+            print "\n\n"
 
-    #         # TASK TASKS
-    #         print "TASKS:"
-    #         tTasks = t.tasks
-    #         print tTasks
-    #         print "\n\n"
+            # TASK TASKS
+            print "TASKS:"
+            tTasks = t.tasks
+            print tTasks
+            print "\n\n"
 
-    #         # TASK NOTES
-    #         print "NOTES:"
-    #         tNotes = t.notes
-    #         print tNotes
-    #         print "\n\n"
+            # TASK NOTES
+            print "NOTES:"
+            tNotes = t.notes
+            print tNotes
+            print "\n\n"
 
-    #         # TASK TAGS
-    #         print "TAGS:"
-    #         tTags = t.tags
-    #         print tTags
-    #         print "\n\n"
+            # TASK TAGS
+            print "TAGS:"
+            tTags = t.tags
+            print tTags
+            print "\n\n"
 
-    #     return
-
-        print aProject.raw_content
-
-        # CREATE A NEW TOP-LEVEL PROJECT
-        bathroomProject = doc.create_project("Refurbish Bathroom")
-        # WITH A SUB-PROJECT
-        suiteProject = bathroomProject.add_subproject('Buy a Bathroom Suite')
-
-        # GET A PROJECT
-        coffeeProject = allProjects.get_by_name('make coffee')
-
-        # GET PROJECT TASKS
-        coffeeTasks = coffeeProject.tasks
-
-        for task in coffeeTasks:
-            print task.raw_content
-            task.done()
-            print task.get_tag_string()
-            print task.get_notes_string()
-
-        # ADD TASK TO PROJECT
-        newtask = coffeeProject.add_task('drink another cup', tags=[
-                                         "coffee", "due(2016-09-04 21:22)"], notes="might regret this later")
-
-        # COMPLETE A TASK
-        newtask.done()
+        return

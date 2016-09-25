@@ -33,3 +33,4 @@ test_database.sql
 /logs/log.html
 
 path_to_settings.yaml
+*/tests/output
