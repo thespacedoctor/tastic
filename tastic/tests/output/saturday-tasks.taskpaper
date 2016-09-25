@@ -1,0 +1,45 @@
+I need to review this document every month or so to add new tasks and project, refresh and tidy current projects and clear out stale ones.
+this is a rolling document where I can add projects and task I know I can only get done on saturdays
+make sure to make time to do nothing
+- do get hair cut @due
+- put up shelves in living room @flag
+- take the boys to the park @next
+- take the boys to the cinema if it's raining @someday
+- invite friends over for drinks
+grocery shop: @due
+	The super-market closes at 8pm on saturdays
+	- carrots
+	- shampoo
+	- beer
+	- washing detergent
+make coffee: @done(2016-09-21 20:38:17)
+	- scoop 3 heaped tablespoons of coffee into cafetiere @done(2016-09-21 20:38:17)
+	- fill cafetiere with boiled water from kettle @done(2016-09-21 20:38:17)
+	- wait for 3 minutes @done(2016-09-21 20:38:17)
+	- plunge the coffee in the cafetiere @done(2016-09-21 20:38:17)
+	- pour into cup @done(2016-09-21 20:38:17)
+	- drink @done(2016-09-21 20:38:17)
+		ahhhhhhh that's good
+tidy the garden: @flag
+	build bbq: @someday
+	cut the grass:
+		- has it stopped raining yet @hold
+			you can check the weather here: http://forecast.io/
+		- get the mower out
+		- put welly boots on
+		- cut the grass
+	build a shed: @someday @garden
+		research shed designs: @someday
+			- look for 5 videos on youtube
+				good video: https://www.youtube.com/watch?v=nMaGTP82DtI
+				- note the urls of the most useful videos
+Archive:
+	- research the price of fencing online @done(2016-09-15) @project(tidy the garden / replace hedge with fence)
+	- clear the garden @done(2016-09-15) @project(tidy the garden / cut the grass)
+[Searches]: @hide
+	- do: due @search(/project @due//* union //@due and not @done)
+	- do: flag @search(/project @flag//* union //@flag and not @done)
+	- do: projects to tag @search(/project not "@" and not "archive"//*)
+	- review: next or someday @search(project @next or @someday//* )
+	- Project List @search(/project not @someday)
+	- Next and Someday List @search(/project @next or @someday)
