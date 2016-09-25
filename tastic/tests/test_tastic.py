@@ -135,7 +135,7 @@ class test_tastic():
 
         # DOCUMENT LEVEL METHODS AND PROPERTIES
         # LOAD UP THE TASKPAPER FILE
-        taskpaperFile = pathToOutputDir + "/test.taskpaper"
+        taskpaperFile = pathToOutputDir + "/saturday-tasks.taskpaper"
         doc = document(taskpaperFile)
 
         # PROJECT LEVEL METHODS AND PROPERTIES
@@ -210,7 +210,7 @@ class test_tastic():
 
         # DOCUMENT LEVEL METHODS AND PROPERTIES
         # LOAD UP THE TASKPAPER FILE
-        taskpaperFile = pathToOutputDir + "/test.taskpaper"
+        taskpaperFile = pathToOutputDir + "/saturday-tasks.taskpaper"
         doc = document(taskpaperFile)
 
         # TASK LEVEL METHODS AND PROPERTIES
