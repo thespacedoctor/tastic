@@ -263,7 +263,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'tastic', u'tastic Documentation',
-     u'Dave Young', 'tastic', 'Scripts and Command-Line tools for working with taskpaper documents on macOS and iOS',
+     u'Dave Young', 'tastic', 'A python package for working with taskpaper documents',
      'Miscellaneous'),
 ]
 

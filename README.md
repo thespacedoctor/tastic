@@ -1,8 +1,7 @@
 tastic
 ======
 
-*Scripts and Command-Line tools for working with taskpaper documents on
-macOS and iOS*.
+*A python package for working with taskpaper documents*.
 
 Usage
 =====
