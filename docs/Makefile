@@ -77,7 +77,7 @@ html:
 	@cat $(INDIR)/tutorial.rst >> $(BLOGRST)
 	@echo "" >> $(BLOGRST)
 
-	pandoc --from=rst --to=markdown_mmd --output=$(BLOGMD) $(BLOGRST)
+	pandoc -s --columns=3000 --smart --wrap=preserve -f rst -t  markdown_mmd+yaml_metadata_block+tex_math_dollars+mmd_link_attributes+raw_html+backtick_code_blocks --output=$(BLOGMD) $(BLOGRST)
 	pandoc --from=rst --to=markdown_mmd --output=$(READMEMD) $(READMERST)
 
 	rm -rf $(BUILDDIR)/html/todo.html
