@@ -12,6 +12,8 @@ APIDIR        = source/_api
 INDIR         = source/_includes
 READMERST = ../README.rst
 READMEMD = ../README.md
+BLOGRST = ../blog-post.rst
+BLOGMD = ../blog-post.md
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
@@ -64,6 +66,18 @@ html:
 	@cat $(INDIR)/license.rst >> $(READMERST)
 	@echo "" >> $(READMERST)
 
+	@cat $(INDIR)/description.rst > $(BLOGRST)
+	@echo "" >> $(BLOGRST)
+	@cat $(INDIR)/usage.rst >> $(BLOGRST)
+	@echo "" >> $(BLOGRST)
+	@cat $(INDIR)/installation.rst >> $(BLOGRST)
+	@echo "" >> $(BLOGRST)
+	@cat $(INDIR)/documentation.rst >> $(BLOGRST)
+	@echo "" >> $(BLOGRST)
+	@cat $(INDIR)/tutorial.rst >> $(BLOGRST)
+	@echo "" >> $(BLOGRST)
+
+	pandoc --from=rst --to=markdown_mmd --output=$(BLOGMD) $(BLOGRST)
 	pandoc --from=rst --to=markdown_mmd --output=$(READMEMD) $(READMERST)
 
 	rm -rf $(BUILDDIR)/html/todo.html

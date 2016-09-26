@@ -9,7 +9,7 @@ Usage
 .. code-block:: bash 
    
     
-    Documentation for tastic can be found here: http://tastic-for-taskpaper.readthedocs.io/en/stable/
+    Documentation for tastic can be found here: http://tastic.readthedocs.org/en/stable
     
     Usage:
         tastic index [-s <pathToSettingsFile>]
