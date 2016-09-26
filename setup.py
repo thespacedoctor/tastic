@@ -28,7 +28,7 @@ if exists:
 
 setup(name="tastic",
       version=__version__,
-      description="Scripts and Command-Line tools for working with taskpaper documents on macOS and iOS",
+      description="A python package for working with taskpaper documents",
       long_description=readme(),
       classifiers=[
           'Development Status :: 4 - Beta',
