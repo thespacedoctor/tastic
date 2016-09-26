@@ -7,7 +7,7 @@ macOS and iOS*.
 Usage
 =====
 
-    Documentation for tastic can be found here: http://tastic-for-taskpaper.readthedocs.io/en/stable/
+    Documentation for tastic can be found here: http://tastic.readthedocs.org/en/stable
 
     Usage:
         tastic index [-s <pathToSettingsFile>]
@@ -19,8 +19,9 @@ Documentation
 =============
 
 Documentation for tastic is hosted by [Read the
-Docs](http://tastic-for-taskpaper.readthedocs.io/en/stable/) (last [stable
-version](http://tastic-for-taskpaper.readthedocs.io/en/stable/) and [latest
+Docs](http://tastic-for-taskpaper.readthedocs.io/en/stable/) (last
+[stable version](http://tastic-for-taskpaper.readthedocs.io/en/stable/)
+and [latest
 version](http://tastic-for-taskpaper.readthedocs.io/en/latest/)).
 
 Installation
