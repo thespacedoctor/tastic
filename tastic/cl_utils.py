@@ -29,8 +29,7 @@ def main(arguments=None):
         docString=__doc__,
         logLevel="DEBUG",
         options_first=False,
-        projectName="tastic",
-        tunnel=False
+        projectName="tastic"
     )
     arguments, settings, log, dbConn = su.setup()
 
