@@ -796,7 +796,7 @@ class baseClass():
 
         newProject = self._get_object(
             regex=re.compile(
-                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)+)', re.UNICODE),
+                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)*)', re.UNICODE),
             objectType="project",
             content=project
         )
@@ -808,7 +808,7 @@ class baseClass():
             indentLevel=1, projects=self.projects + newProject)
 
         if self.parent:
-            self.parent._update_document_tree(
+            doc = self.parent._update_document_tree(
                 oldContent=oldContent,
                 newContent=newContent
             )
@@ -1073,7 +1073,7 @@ class baseClass():
             indentLevel=1, tasks=self.tasks + newTask)
 
         if self.parent:
-            self.parent._update_document_tree(
+            doc = self.parent._update_document_tree(
                 oldContent=oldContent,
                 newContent=newContent
             )
@@ -1081,6 +1081,7 @@ class baseClass():
         self.content = self.content.replace(self.to_string(indentLevel=0, title=False), self.to_string(
             indentLevel=0, title=False, tasks=self.tasks + newTask))
 
+        print self.parent
         doc = self
         while doc.parent:
             doc = doc.parent
@@ -1089,9 +1090,12 @@ class baseClass():
         if not self.parent:
             parent = self
         else:
+
             parent = doc.get_project(self.title)
         if not parent:
             parent = doc.get_task(self.title)
+
+        print parent
         thisTask = parent.get_task(title)
 
         self.refresh
@@ -1455,10 +1459,12 @@ class project(baseClass):
         """
 
         projectTitle = self.title
-        for p in self.parent.projects:
+        theseProjects = self.parent.projects[:]
+        for p in theseProjects:
             if p.title == projectTitle:
-                self.parent.projects.remove(p)
+                theseProjects.remove(p)
                 break
+        self.parent.projects = theseProjects
 
         doc = self
         while doc:
