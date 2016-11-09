@@ -1,0 +1,53 @@
+HMpTy:
+	Release:
+	
+	
+	
+	- add empty logger to all my code
+	
+	NEXT PROJECTS:
+		- fix the CRTS importer in the marshall to do a cone search on the transientBucket and import new sources and update recurrent sources
+		- replace add_HTMIds_to_mysql_tables everywhere the HMPTY method to ad HTMIDs
+		- bake the cone search into sherlock
+		- update all marshall tables with new HTMIDs
+		- update all conesearch tables with new HTMIDs
+		- replace cone search in sherlock with hmpty conesearch
+		- replace cone search in breaker with hmpty conesearch
+		- replace cone search in neddy with hmpty conesearch
+		- replace pm_conesearch_transientBucket with hmpty conesearch .. I could either replace the code in this function, or replace the code everywhere that uses  pm_conesearch_transientBucket
+		- bake the cone search into sloancone??
+Archive:
+	- write blog post about hmpty and email SN group @done(2016-10-13) @project(HMpTy / Release)
+	- add TOC to posts @done(2016-10-13) @project(HMpTy / Release)
+	- add photo: to front matter @done(2016-10-13) @project(HMpTy / Release)
+	- get code blocks to scroll left to right @done(2016-10-13) @project(HMpTy / Release)
+	- remove image icon from photo posts @done(2016-10-13) @project(HMpTy / Release)
+	- projects not working in sidebar @done(2016-10-12) @project(HMpTy / Release)
+	- remove mag glass from non gallery images @done(2016-10-13) @project(HMpTy / Release)
+	- astronote icon at top of page - link broken @done(2016-10-13) @project(HMpTy / Release)
+	- get a new icon @done(2016-10-12) @project(HMpTy / Release)
+	- change description to a python package and command-line tools for … @done(2016-10-12) @project(HMpTy / Release)
+	- add a more detailed description (add as todo in other packages)  @done(2016-10-12) @project(HMpTy / Release)
+		- give a list of the things the python code can achieve (can I automate this list?) @done(2016-10-12)
+	- change usage to command-line usage @done(2016-10-12) @project(HMpTy / Release)
+	- change tutorial to command-line tools tutorial @done(2016-10-12) @project(HMpTy / Release)
+	- change documentation to python documentation @done(2016-10-12) @project(HMpTy / Release)
+	Conesearch: @done(2016-10-12) @project(HMpTy)
+		- REVIEW THIS PROJECT @done(2016-10-12)
+	Tutorial: @done(2016-10-11) @project(HMpTy)
+		- write up a tutorial for the command-line tools @done(2016-10-11)
+	- release hmpty @done(2016-10-10) @project(HMpTy / Conesearch)
+	- return the conesearch results in a python list or dicts with separations added, and north/east separations added @done(2016-10-10) @project(HMpTy / Conesearch)
+	- add an error whenever the correct HTM column is not in the table — ask user to add it @done(2016-10-10) @project(HMpTy / Conesearch)
+	- add a test to select the columns required from transient bucket  @done(2016-10-10) @project(HMpTy / Conesearch)
+	- add a test to select distinct columns  @done(2016-10-10) @project(HMpTy / Conesearch)
+	- add a test to select classified sources from transient bucket @done(2016-10-10) @project(HMpTy / Conesearch)
+	- update docs @done(2016-10-10) @project(HMpTy / Conesearch)
+	- write a CL tool to conesearch a specific database tables @done(2016-10-10) @project(HMpTy / Conesearch)
+	- add in the fundamental renderers for results of the CL tool @done(2016-10-10) @project(HMpTy / Conesearch)
+	- write tutorial for CL tools @done(2016-10-10) @project(HMpTy / Conesearch)
+	- send snippets to package control @done(2016-10-10) @project(HMpTy / Conesearch)
+	- add info about snippets to docs @done(2016-10-10) @project(HMpTy / Conesearch)
+	- add info about snippets to template python packages @done(2016-10-10) @project(HMpTy / Conesearch)
+	- add info about snippers to polyglot, trnasientNamer, tastic, panstamps @done(2016-10-10) @project(HMpTy / Conesearch)
+	- add panstamps snippet to package control @done(2016-10-10) @project(HMpTy / Conesearch)

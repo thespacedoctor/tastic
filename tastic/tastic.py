@@ -46,7 +46,6 @@ class baseClass():
                 print note.raw_content
                 print task.raw_content
         """
-
         return self.meta["raw_content"]
 
     @property
@@ -70,7 +69,7 @@ class baseClass():
         """
         return self._get_object(
             regex=re.compile(
-                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\])\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)*)', re.UNICODE),
+                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)+)', re.UNICODE),
             objectType="project",
             content=None
         )
@@ -555,11 +554,26 @@ class baseClass():
             title=False, projects=sortedProjects, indentLevel=0)
 
         for p in self.projects:
-            p.sort_projects(workflowTags)
+            p.projects = p.sort_projects(workflowTags)
 
-        self.content = self.to_string(title=True, indentLevel=0)
+        # ADD DIRECTLY TO CONTENT IF THE PROJECT IS BEING ADDED SPECIFICALLY TO
+        # THIS OBJECT
+        oldContent = self.to_string(indentLevel=1)
+        newContent = self.to_string(
+            indentLevel=1, projects=sortedProjects)
+
+        if self.parent:
+            self.parent._update_document_tree(
+                oldContent=oldContent,
+                newContent=newContent
+            )
+
+        self.content = self.content.replace(self.to_string(indentLevel=0, title=False), self.to_string(
+            indentLevel=0, title=False, projects=sortedProjects))
+
         self.refresh
-        return None
+
+        return sortedProjects
 
     def sort_tasks(
             self,
@@ -595,8 +609,6 @@ class baseClass():
         self.refresh
         workflowTagsLists = workflowTags.strip().replace(",", "").replace("@", "")
         workflowTagsLists = workflowTagsLists.split(" ")
-
-        import collections
         matchedTasks = collections.OrderedDict(sorted({}.items()))
         unmatchedTasks = []
 
@@ -622,6 +634,7 @@ class baseClass():
         for k, v in matchedTasks.iteritems():
             sortedTasks += v
 
+        oldContent = self.to_string(indentLevel=1)
         sortedTasks += unmatchedTasks
         self.tasks = sortedTasks
 
@@ -635,19 +648,29 @@ class baseClass():
         except:
             pass
 
-        sortedProjects = []
         if hasProjects:
             for p in self.projects:
-                sortedProjects.append(p.sort_tasks(workflowTags, 1))
+                p.tasks = p.sort_tasks(workflowTags, 1)
 
-        sortedTasks = []
         for t in self.tasks:
-            sortedTasks.append(t.sort_tasks(workflowTags, 1))
+            t.tasks = t.sort_tasks(workflowTags, 1)
 
-        self.content = self.to_string(
-            title=False, tasks=sortedTasks, projects=sortedProjects, indentLevel=0)
+        # ADD DIRECTLY TO CONTENT IF THE PROJECT IS BEING ADDED SPECIFICALLY TO
+        # THIS OBJECT
+        newContent = self.to_string(
+            tasks=sortedTasks, indentLevel=1)
+
+        if self.parent:
+            self.parent._update_document_tree(
+                oldContent=oldContent,
+                newContent=newContent
+            )
+
+        self.content = self.content.replace(self.to_string(indentLevel=0, title=False), self.to_string(
+            indentLevel=0, title=False, tasks=sortedTasks))
+
         self.refresh
-        return self
+        return sortedTasks
 
     def _get_object(
         self,
@@ -699,7 +722,6 @@ class baseClass():
 
                 doc.tidy()
         """
-
         try:
             self.tags.sort(lambda x, y: cmp(len(x), len(y)))
         except:
@@ -723,9 +745,9 @@ class baseClass():
                 self.content = ("\n").join(self.to_string(
                     indentLevel=0).split("\n")[1:])
             else:
-                self.content = self.to_string(
-                    indentLevel=0)
-
+                regex = re.compile(r'\s*?\n\s*?\n')
+                while "\n\n" in self.content:
+                    self.content = regex.sub("\n", self.content)
         return None
 
     def add_project(
@@ -774,7 +796,7 @@ class baseClass():
 
         newProject = self._get_object(
             regex=re.compile(
-                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\])\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)*)', re.UNICODE),
+                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)+)', re.UNICODE),
             objectType="project",
             content=project
         )
@@ -1157,7 +1179,6 @@ class document(baseClass):
         self.content = self.raw_content
         self.level = -1
         self.parent = None
-        self.tidy()
         self.filename = os.path.basename(self.filepath)
 
     def __repr__(self):
@@ -1183,7 +1204,7 @@ class document(baseClass):
         content = readFile.read()
         readFile.close()
 
-        return content
+        return content.encode("utf-8")
 
     @property
     def tags(self):
@@ -1235,8 +1256,21 @@ class document(baseClass):
         if copypath:
             self.filepath = copypath
 
+        content = self.content
+
+        import codecs
+        # SET ENCODE ERROR RETURN VALUE
+
+        def handler(e):
+            return (u' ', e.start + 1)
+        codecs.register_error('dryx', handler)
+
+        # RECODE INTO ASCII
+        udata = content.decode("utf-8")
+        content = udata.encode("ascii", "dryx")
+
         writeFile = codecs.open(self.filepath, encoding='utf-8', mode='w')
-        writeFile.write(self.content)
+        writeFile.write(content)
         writeFile.close()
 
         return None
@@ -1257,7 +1291,7 @@ class document(baseClass):
 
         self.projects = self._get_object(
             regex=re.compile(
-                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\])\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)*)', re.UNICODE),
+                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)+)', re.UNICODE),
             objectType="project",
             content=None
         )
@@ -1324,10 +1358,13 @@ class task(baseClass):
         if self.parent:
             self.parent.refresh
 
+        replace = None
         title = self.title
         for t in self.parent.tasks:
             if t.title == title:
                 replace = t
+        if not replace:
+            return
         self.tags = replace.tags
         self.notes = replace.notes
         self.tasks = replace.tasks
@@ -1379,6 +1416,8 @@ class project(baseClass):
             self.parent.refresh
         title = self.title
         replace = self.parent.get_project(title)
+        if not replace:
+            return
         self.tags = replace.tags
         self.tasks = replace.tasks
         self.notes = replace.notes
@@ -1415,27 +1454,20 @@ class project(baseClass):
                 myProject.delete()
         """
 
-        oldContent = self.to_string(indentLevel=1)
-        now = datetime.now()
-        now = now.strftime("%Y-%m-%d %H:%M:%S")
-        newContent = ""
+        projectTitle = self.title
+        for p in self.parent.projects:
+            if p.title == projectTitle:
+                self.parent.projects.remove(p)
+                break
 
-        # ADD DIRECTLY TO CONTENT IF THE PROJECT IS BEING ADDED SPECIFICALLY TO
-        # THIS OBJECT
-        self.content = ("\n").join(self.to_string(
-            indentLevel=0).split("\n")[1:])
-        doc = self.parent._update_document_tree(
-            oldContent=oldContent,
-            newContent=newContent
-        )
+        doc = self
+        while doc:
+            if not doc.parent:
+                break
+            else:
+                doc = doc.parent
 
-        doc.projects = doc._get_object(
-            regex=re.compile(
-                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\])\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)*)', re.UNICODE),
-            objectType="project",
-            content=None
-        )
-        doc.tidy()
+        doc.content = doc.to_string(indentLevel=0, title=False)
 
         return None
 

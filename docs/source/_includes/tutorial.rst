@@ -1,5 +1,60 @@
-Tutorial
-========
+Command-Line Tools Tutorial
+===========================
+
+As well as providing python objects and methods for working with your taskpaper documents, tastic also provides some very useful command-line tools. These tools work not only with single taskpaper documents, but also with entire workspaces (nested folders) containing taskpaper documents.
+
+Before you begin using the tastic command-line tools you will need to populate some custom settings within your tastic settings file.
+
+To setup the default settings file at ``~/.config/tastic/tastic.yaml`` run the command:
+
+.. code-block:: bash 
+    
+    tastic init
+
+This should create and open the settings file; follow the instructions in the file to populate the missing settings values (usually given an ``XXX`` placeholder). 
+
+Sorting Taskpaper Docs via Workflow Tags
+----------------------------------------
+
+For details about exactly what happens when you sort a taskpaper document's projects and tasks via workflow tags, see the `sorting projects by tags`_ and `sorting tasks by tags`_ sections of the python code tutorial. But for now let's see how to achieve sorting via the command-line.
+
+In the settings file you will find a set of workflow tags, which you can adapt to your liking:
+
+.. code-block:: yaml 
+    
+    worflowTags: "@due, @flag, @hold, @next, @someday, @wait"
+
+To sort an individual taskpaper document's projects and tasks via these workflow tags (ordered from most to least prioritised) use the command:
+
+.. code-block:: bash
+
+    tastic sort /path/to/my/doc.taskpaper
+
+If you want to sort the taskpaper documents recursively contained within a workspace, pass instead the root-path of the workspace:
+
+.. code-block:: bash
+
+    tastic sort /path/to/my/workspace/
+
+Moving Archived `@done` Tasks to a Markdown Log File
+--------------------------------------------------
+
+To move completed tasks found in the *Archive* project of a taskpaper document into an adjacent markdown file run the command:
+
+.. code-block:: bash
+
+    tastic archive /path/to/my/doc.taskpaper
+
+This moves the completed archived tasks into a markdown file located at `/path/to/my/doc-tasklog.md` and formats them into a neat, complete-date ordered table (completed date only added if `@done` tags includes the completion date as an attribute, e.g. `@done(2016-11-09)`).
+
+Again if you want to run this code on all taskpaper documents contained within a workspace, pass instead the root-path of the workspace:
+
+.. code-block:: bash
+
+    tastic archive /path/to/my/workspace/
+
+Python Code Tutorial
+====================
 
 Before we start, you'll need an example taskpaper document to work with. Copy and paste the following example document content into a taskpaper file somewhere on your file system:
 
@@ -85,7 +140,7 @@ Working with documents
 I'm going to assume that you've saved the example file above to your desktop and named the file *saturday-tasks.taskpaper*. Fire up ipython and let's get stuck in.
 
 Reading a document
-******************
+~~~~~~~~~~~~~~~~~~
 
 To read the file into memory use the following python code:
 
@@ -156,7 +211,7 @@ If at any stage in your code you want to tidy the document again (not that you s
     doc.tidy() 
 
 Writing a document
-******************
+~~~~~~~~~~~~~~~~~~
 
 Note any changes you make to the content of the document will have to be saved back to the file. To save the document at any stage run the command:
 
@@ -178,7 +233,7 @@ Working with projects
 Both documents and projects themselves can contain sub-projects.
 
 Get a project by name
-*********************
+~~~~~~~~~~~~~~~~~~~~~
 
 To select out a single project by it's title use the `get_project` method:
 
@@ -206,7 +261,7 @@ To select out a single project by it's title use the `get_project` method:
 Also note the use of the `to_string()` method. This method can be used on documents, projects, tasks and notes to convert the object to a string.
 
 Lising projects
-***************
+~~~~~~~~~~~~~~~
 
 To compile a list of root-level projects within your document, use the `projects` attribute:
 
@@ -238,7 +293,7 @@ All projects also have a `projects` attribute so you can drill down into a docum
     replace hedge with fence:
 
 Filtering projects by tag
-*************************
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To filter projects by an associated tag, use the `tagged_projects` method:
 
@@ -256,7 +311,7 @@ To filter projects by an associated tag, use the `tagged_projects` method:
 The keen eyed among you will notice that this filter is in fact recursive, picking up all projects within the document with the "@due" tag and not just the root level projects. Again each project has a `tagged_projects` method to allow for finer grain filtering of projects.
 
 Sorting projects by tags
-************************
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 `sort_projects` is one of my favorite methods. Given a list of workflow tags, you can sort projects recursively within a taskpaper document or project. In the example below projects tagged with `@due` rise to the top of their parent object, followed by `@flag` projects and so on. Projects not associated with any of the workflow tags are sorted after matched projects.
 
@@ -314,7 +369,7 @@ Sorting projects by tags
         - Next and Someday List @search(/project @next or @someday)
 
 Marking a project as done
-*************************
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To mark a project as done, use the `done()` method:
 
@@ -337,7 +392,7 @@ To mark a project as done, use the `done()` method:
 It's also possible to mark all descendant items of the object as `@done` by using `.done("all")`.
 
 Adding a project
-****************
+~~~~~~~~~~~~~~~~
 
 After sorting all the projects in the document you may have to use the `refresh` attribute for any project you have in the local namespace to refresh its attributes.
 
@@ -412,7 +467,7 @@ Now to add a sub-project use the `add_project` method (this also works on the do
         - Next and Someday List @search(/project @next or @someday)
 
 Deleting a project
-******************
+~~~~~~~~~~~~~~~~~~
 
 To delete a project, use the `delete()` method
 
@@ -470,7 +525,7 @@ Working with tasks
 ------------------
 
 Listing Tasks
-*************
+~~~~~~~~~~~~~
 
 Documents, projects and tasks can all contain tasks. To get a list of the  objects tasks, use its `tasks` attribute.
 
@@ -489,7 +544,7 @@ Documents, projects and tasks can all contain tasks. To get a list of the  objec
     - put up shelves in living room
 
 Filtering Tasks by tags
-***********************
+~~~~~~~~~~~~~~~~~~~~~~~
 
 To filter tasks by an associated tag, use the `tagged_tasks` method:
 
@@ -507,7 +562,7 @@ To filter tasks by an associated tag, use the `tagged_tasks` method:
 As with the project filter, the task filter is recursive, picking up all tasks within the document with the "@hot" tag and not just the root level tasks. Again each project and task has a `tagged_tasks` method to allow for finer grain filtering of tasks.
 
 Sorting tasks by tags
-*********************
+~~~~~~~~~~~~~~~~~~~~~
 
 Given a list of workflow tags, you can sort tasks recursively within a taskpaper document, project or task. In the example below tasks tagged with `@due` rise to the top of their parent object, followed by `@flag` task and so on. Tasks not associated with any of the workflow tags are sorted after matched tasks.
 
@@ -563,7 +618,7 @@ Given a list of workflow tags, you can sort tasks recursively within a taskpaper
 
     
 Marking a task as done
-**********************
+~~~~~~~~~~~~~~~~~~~~~~
 
 To mark a task as done, use the `done()` method:
 
@@ -587,7 +642,7 @@ To mark a task as done, use the `done()` method:
             ahhhhhhh that's good
         
 Adding a task
-*************
+~~~~~~~~~~~~~
 
 A task can be added to a document, project or task object using the `add_task` method:
 
@@ -609,7 +664,7 @@ Working with notes
 Documents, project and tasks can all have notes assigned to them.
 
 Listing notes
-*************
+~~~~~~~~~~~~~
 
 To list the notes for any given object use the `notestr()` method. 
 
@@ -632,7 +687,7 @@ To list the notes for any given object use the `notestr()` method.
 
 
 Adding a note
-*************
+~~~~~~~~~~~~~
 
 Use the `add_note()` method to add notes to documents, projects and tasks:
 
@@ -663,7 +718,7 @@ Working with tags
 -----------------
 
 Adding a tag to a project or task
-*********************************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To add (append) a tag to a task or project use the `add_tag` method.
 
@@ -691,7 +746,7 @@ To add (append) a tag to a task or project use the `add_tag` method.
             - note the urls of the most useful videos
 
 Setting a project's or task's tags
-**********************************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Instead of adding a tag, you can replace all of the tags using the `set_tags()` method.
 
@@ -720,7 +775,7 @@ Instead of adding a tag, you can replace all of the tags using the `set_tags()` 
             - note the urls of the most useful videos
 
 Removing all tags from a project or task
-****************************************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To delete all of the tags, use the `set_tags()` method with no argument:
 

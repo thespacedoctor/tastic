@@ -1,0 +1,26 @@
+TNS-to-Marshall-Core-Tables:
+	
+
+NOW MOVE BACK TO THE SCHEME UPDATE — update transient summary flags
+	
+	COMMENTS:
+		- get TNS comments ingested into the marshall system
+Archive:
+	Discoveries: @done(2016-10-28) @project(TNS-to-Marshall-Core-Tables)
+		- update objectName where null in tns_photometry @done(2016-10-27)
+		- need a TNS_photometry to discoveries importer … build a view with this query  @done(2016-10-28)
+	select distinct s.tnsId, s.raDEg, s.decDeg, p.objectName, p.survey, p.suggestedType, s.hostRedshift, s.discoveryName from tns_sources s, tns_photometry p where s.tnsId=p.tnsId and  objectName is null @done(2016-10-28) @project(TNS-to-Marshall-Core-Tables)
+	- update survey where null in tns_photometry @done(2016-10-25) @project(TNS-to-Marshall-Core-Tables / Discoveries)
+	- check the TNS tables on the VMs to see if the survey column has updated in the photometry table @done(2016-10-25) @project(TNS-to-Marshall-Core-Tables / Discoveries)
+	- import VM TNS tables into the mac marshall database @done(2016-10-25) @project(TNS-to-Marshall-Core-Tables / Discoveries)
+	SPECTRA: @done(2016-10-20) @project(TNS-to-Marshall-Core-Tables)
+		- get the TNS spectra impborter working correctly @done(2016-10-20)
+		- update survey where black @done(2016-10-20)
+		- get the transientBucket to marshall_spectra export working correctly @done(2016-10-20)
+	PHOTOMETRY: @done(2016-10-20) @project(TNS-to-Marshall-Core-Tables)
+		- get the TNS photometry importer working correctly @done(2016-10-20)
+	SOURCES: @done(2016-10-20) @project(TNS-to-Marshall-Core-Tables)
+	- add in a name into TNS where none exists @done(2016-10-20) @project(TNS-to-Marshall-Core-Tables / SOURCES)
+	- add in a survey into TNS source where none exists @done(2016-10-20) @project(TNS-to-Marshall-Core-Tables / SOURCES)
+	- get the TNS source importer working correctly @done(2016-10-20) @project(TNS-to-Marshall-Core-Tables / SOURCES)
+	- rename tns_transients to sources @done(2016-10-19) @project(TNS-to-Marshall-Core-Tables / SOURCES)

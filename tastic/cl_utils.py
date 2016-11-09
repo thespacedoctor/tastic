@@ -2,6 +2,23 @@
 # encoding: utf-8
 """
 Documentation for tastic can be found here: http://tastic-for-taskpaper.readthedocs.io/en/stable/
+
+
+Usage:
+    tastic init
+    tastic sort <pathToFileOrWorkspace> [-s <pathToSettingsFile>]
+    tastic archive <pathToFileOrWorkspace> [-s <pathToSettingsFile>]
+
+Options:
+    init                     setup the tastic settings file for the first time
+    sort                     sort a taskpaper file or directory containing taskpaper files via workflow tags in settings file
+    archive                  move done tasks in the 'Archive' projects within taskpaper documents into markdown tasklog files
+
+    pathToFileOrWorkspace    give a path to an individual taskpaper file or the root of a workspace containing taskpaper files
+    -h, --help               show this help message
+    -v, --version            show version
+    -s, --settings           the settings file
+
 """
 ################# GLOBAL IMPORTS ####################
 import sys
@@ -12,11 +29,9 @@ import glob
 import pickle
 from docopt import docopt
 from fundamentals import tools, times
+from subprocess import Popen, PIPE, STDOUT
+from . import workspace
 # from ..__init__ import *
-
-
-def tab_complete(text, state):
-    return (glob.glob(text + '*') + [None])[state]
 
 
 def main(arguments=None):
@@ -32,11 +47,6 @@ def main(arguments=None):
         projectName="tastic"
     )
     arguments, settings, log, dbConn = su.setup()
-
-    # tab completion for raw_input
-    readline.set_completer_delims(' \t\n;')
-    readline.parse_and_bind("tab: complete")
-    readline.set_completer(tab_complete)
 
     # unpack remaining cl arguments using `exec` to setup the variable names
     # automatically
@@ -59,7 +69,33 @@ def main(arguments=None):
         '--- STARTING TO RUN THE cl_utils.py AT %s' %
         (startTime,))
 
+    if init:
+        from os.path import expanduser
+        home = expanduser("~")
+        filepath = home + "/.config/tastic/tastic.yaml"
+        try:
+            cmd = """open %(filepath)s""" % locals()
+            p = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
+        except:
+            pass
+        try:
+            cmd = """start %(filepath)s""" % locals()
+            p = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
+        except:
+            pass
+
     # CALL FUNCTIONS/OBJECTS
+    if sort or archive:
+
+        ws = workspace(
+            log=log,
+            settings=settings,
+            fileOrWorkspacePath=pathToFileOrWorkspace
+        )
+    if sort:
+        ws.sort()
+    if archive:
+        ws.archive_done()
 
     if "dbConn" in locals() and dbConn:
         dbConn.commit()

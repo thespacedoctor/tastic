@@ -1,0 +1,240 @@
+PESSTO-ESO-SSDR3: @due(3)
+
+
+
+- include release description and add a tag
+- act on changes found in albertos content validation report @due
+
+Transient-Catalogue:
+	./transient-catalogue.md
+	
+	Database Table:
+	
+	
+	PESSTO Classified Sources:
+		- parse the following from the atels source name, notes, classification phase days, classification date, disc date, trans redshift, classification type
+		- use the table to query and compare atel to marshall values — update marshall where needed @flag
+
+		find: ^(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*$
+		replace: update phase_iii_transient_catalogue_ssdr3 set atel_ra = "\2", atel_dec="\3", atel_discovery_date="\4", atel_discovery_survey="\5", atel_discovery_mag=\6, atel_transient_redshift=\7, atel_classification="\8", atel_classification_phase="\9" where TRANSIENT_ID = "\1";
+	
+	Non-PESSTO Classified Sources: @wait
+		- same task as for PESSTO classified sources
+		- check all atel text for source where TRANS CLASS SOURCE =atel to make sure the classification has come from that atel
+	
+	
+	ATel Matching: @due
+		- read through all Atels and make sure 
+			- the best classification is given
+			- the best phase estimate is given (qualitative and quantitative)
+	
+	Host Matches: @flag
+		- for each transient do the following staged searches until a host is found - remember to record spec redshift or photoz and the stage at which the host is found
+			- 1.  NED Classified Extragalactic Source with 25" search radius
+			- 2.  NED Unclassified Extragalactic Candidates with 25" search radius @due
+			- 3.  SDSS DR12 Spectroscopic Sources with 25" search radius
+			- 4.  SDSS DR12 Photometric Sources with a 25" search radius
+			- 5.  NED Classified Extragalactic Source with a 100" search radius @wait
+
+
+
+
+
+Release Description:
+
+
+- scan documents in inbox
+
+
+
+New PhaseIII Changes:
+	- Definition of catalogue data links. The keywords TXP3Ri and TXP3Ci, which were previously used to define the target catalogue of a data link between two catalogues, are being replaced by the new TXRGFi keyword. TXRGFi (type character string) should declare the filename of the target catalog in terms of the ORIGFILE name
+
+Checklist: @wait
+	
+	- lock rows when a release has been submitted to stop file updates
+	- walk through my wiki notes, tidy up, add links and add to sql script to clean data
+	- add the EFFRON fix command to cron scripts
+	- copy cosimo and errki github log notes to my wiki @hold
+
+Issues to correct:
+
+
+Send Final Reduced Release to WiseRep: @flag
+	See here for details about last releases Wiserep export: airmail://message?mail=david.young%40pessto.org&messageid=CAEHLACpONudE6PLrPWRUVg%2BQpghVSDptZ%2Bmgo30YrjY5TxByrw%40mail.gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+Archive:
+	- move all of the released files to github @done(2016-09-07)
+	- Add transientID, ra, dec , classification source, classification atel, discovery mjd, dis filter, disc date, transientbucketid to the trans cat table @done(2016-09-05) @project(Transient-Catalogue / PESSTO Classified Sources)
+	- add the following from the marshall to compare with atel:  classification phase, classification phase days, classification date, disc date, trans redshift, classification type @done(2016-09-05) @project(Transient-Catalogue / PESSTO Classified Sources)
+	- try and duplicate the counts of classifications from efosc and sofi spectra for ssdr2 - 556 @done(2016-09-05) @project(Transient-Catalogue / Database Table)
+		- start again here http://127.0.0.1:83/projects/@due/PESSTO-ESO-SSDR3/Transient-Catalogue/Transient-Catalogue#objects-in-efosc-spectra-phase-iii-releases-not-in-the-transient-catalogue @done(2016-09-05)
+	- update the query above for new classifications from ssdr3 and populate the transient id and transient name columns @done(2016-09-05) @project(Transient-Catalogue / Database Table)
+	- extract out all atels numbers for transients that are: @done(2016-09-05) @project(Transient-Catalogue / PESSTO Classified Sources)
+		- found in SSDR3 EFOSC spectra with grism 13 @done(2016-09-05)
+		- not in SSDR1 or 2 @done(2016-09-05)
+		- where the atel is a PESSTO released atel @done(2016-09-05)
+	- cp 2 new files to SN2013gr mac and add to SSDR2 github @done(2016-09-02) @project(Release Description)
+	- duplicate the ssdr2 table to ssdr3 @done(2016-09-02) @project(Transient-Catalogue / Database Table)
+	- reformat the queries to read earliest classification dates @done(2016-09-02) @project(Transient-Catalogue / Database Table)
+	- add classifications for 7 objects without classifications @done(2016-09-02) @project(Transient-Catalogue / Database Table)
+	- place unique index on table for transID primartyID transientbukcetid @done(2016-09-02) @project(Transient-Catalogue / Database Table)
+	- can I upload the table from csv? @done(2016-09-02) @project(Transient-Catalogue / Database Table)
+	- use the names from the old catalogue to populate transient ID and internal id (transient bucketed) — use sql queryies @done(2016-09-02) @project(Transient-Catalogue / Database Table)
+	- append SN2013gr to the list of changes for SSDR3 @done(2016-09-02) @project(Release Description)
+	- walk through my questions MD file, rerun sql scripts and update release description numbers were needed @done(2016-09-02) @project(Release Description)
+	- print release description as PDF and upload to ESO @done(2016-09-02) @project(Release Description)
+	- close release and email people @done(2016-09-02) @project(Release Description)
+	Data Submission: @done(2016-08-31)
+		- add SN2013gr spectrum as a correction @done(2016-08-31)
+	- add SN2013gr spectrum into database @done(2016-09-02) @project(Release Description)
+		- run all marshall script to see new spectrum appear @flag @done(2016-09-02)
+		- delete old file @done(2016-08-31)
+		- all update filename and path to new row @done(2016-08-31)
+		- update filenames via command-line @done(2016-09-02)
+		- check file has been renamed @done(2016-09-02)
+	- upload new files to ESO @done(2016-09-02) @project(Release Description)
+	- add new references to the database that SJS added @done(2016-08-31) @project(Release Description)
+	- add LSQ12btw, CSS121008–014245+213928 and SN2013F as SSDR3 followup and add to the release description table @done(2016-08-31) @project(Release Description)
+	- how many key science targets and what is the breakdown (SN, AGN …) @done(2016-08-31) @project(Release Description)
+		- add a papers column to pesstoObhecrts and populate with details from SSDR1 and SSDR2 @flag @done(2016-08-31)
+	- Ofer noticed the EFOSC spectrum of SN2013gr from 2013-12-22 In the final reduction (DR2) it looks like a spectrum of the host whereas in the quick reductions it is the SN. @done(2016-08-31) @project(Data Submission)
+	- find the name of the targets in first two releases and mark in tables as followup targets for easy selection @done(2016-08-31) @project(Release Description)
+	- report the spectra in SSDR1 and SSDR2 to match what is given in release descriptions @done(2016-08-31) @project(Release Description)
+	- add a release desscription classification to the pessto Object  add have it appear in the Type column @done(2016-08-31) @project(Release Description)
+	- mark targets in ssdr3 as followup (in follow queues), then check against the number of data frames to determine if they really are followup targets @done(2016-08-31) @project(Release Description)
+	- how many efosc spectra and sofi spectra are taken of these key science targets? @done(2016-08-31) @project(Release Description)
+	- what is the breakdown of frame counts and size for SSDR3 only? @done(2016-08-31) @project(Release Description)
+	- what is the total breakdown of frame counts and size for SSDR3 + 2 + 1? @done(2016-08-31) @project(Release Description)
+	- what is the total amount of EFOSC spectra release and how many are classification spectra? @done(2016-08-31) @project(Release Description)
+	- what is the total of distinct objects with the classification spectra for SSDR3? @done(2016-08-31) @project(Release Description)
+	- what is the total of distinct objects with the classification spectra for SSDR3 + 2 + 1? @done(2016-08-31) @project(Release Description)
+	- give the breakdown of target name, type, number of spectra by grism and publication for key science spectra @done(2016-08-31) @project(Release Description)
+	- rewrite all sofi and efosc files @done(2016-08-30) @project(Data Submission)
+	- check PRODCATG added to rewritten weight and 2d spectra files @done(2016-08-30) @project(Data Submission)
+	- check ASSOC1 has been removed from the same fils @done(2016-08-30) @project(Data Submission)
+	- reexport all sofi and efosc files @done(2016-08-30) @project(Data Submission)
+	- send all files to my mac @done(2016-08-30) @project(Data Submission)
+	- upload 5 of each fileset to eso and test @done(2016-08-30) @project(Data Submission)
+	- upload all to eso and test @done(2016-08-30) @project(Data Submission)
+	- walk though and change text and add XXX for figures I need to add later (add tasks here as I walk through the document) @done(2016-08-30) @project(Release Description)
+	- how many spectra of distinct objects has pessto taken - work off transientBucketId @done(2016-08-30) @project(Release Description)
+	Submission: @done(2016-08-30)
+		- SJS to assign me as survey manager: http://www.eso.org/sci/observing/phase3/overview.html#survey%20manager @done(2016-08-30)
+	See the ES0 webpage giving details of changes for info https://www.eso.org/sci/observing/phase3/upgrade_summary.html @done(2016-08-30) @project(Data Ingest)
+	- category must be defined by PRODCATG within the associated file using the same value that was previously assigned to ASSOCi for ANCILLARY.WEIGHTMAP & ANCILLARY.2DSPECTRUM @done(2016-08-30) @project(Data Ingest)
+	- ASSOCi becomes obsolete and should not be defined anymore for associated FITS files @done(2016-08-30) @project(Data Ingest)
+	- walk through the view for sofi spectra and make sure very column look complete with no outliers @done(2016-08-30) @project(Data Ingest)
+	- walk through the view for sofi imaging and make sure very column look complete with no outliers @done(2016-08-30) @project(Data Ingest)
+		- NTID is null for some images -why? @done(2016-08-30)
+		- TMID is null for 19 ish images @done(2016-08-30)
+	- check the ZP for the sofi imaging @done(2016-08-30) @project(Data Ingest)
+	- check the astrometry errors for the sofi imaging where astrometry was done manually @done(2016-08-30) @project(Data Ingest)
+	- update the procsoft keyword 2.2.9 for spectra and 2.2.10 for astrometry @done(2016-08-30) @project(Data Ingest)
+	- fix any issues found in stats for efosc @done(2016-08-29) @project(Data Ingest)
+	- walk through the view for efosc spectra and make sure very column look complete with no outliers @done(2016-08-30) @project(Data Ingest)
+		- DISPELEM not set for some frames @done(2016-08-30)
+		- EFFRON not set for some frames @done(2016-08-30)
+		- tSN2015L_20160405_Gr11_Free_slit1.5_57608_1_sb.fits has a 2 sec exposure - was it aborted? @done(2016-08-30)
+		- why is gain set to 0.91 and 1.18 for different frames @done(2016-08-30)
+		- is LAMLIN ok set to different values? 8 - 13 @done(2016-08-30)
+		- 4 spectra with NAXIS2=2 and not 1, this ok? @done(2016-08-30)
+		- tPS15si_20150327_Gr13_Free_slit1.0_57601_1_sb.fits has nelem = null @done(2016-08-30)
+		- checked up to object column @flag @done(2016-08-30)
+	- read the documents in devonthink inbox - make notes and add tasks here @done(2016-08-29) @project(Data Ingest)
+	- find objects having 2 transientBucketIds @done(2016-08-29) @project(Checklist)
+	- perform the same checks on the sofi raw/reduced imaging data counts as I did for sofi spectra @done(2016-08-28) @project(Data Ingest)
+		- match numbers of raw frames agains the reduced frames @flag @done(2016-08-28)
+			- working through ‘Erkki-SOFI-Image_Reduction-Notes’ … search for xxxHERExxx @flag @done(2016-08-28)
+		- find the miss frames, if any, and work out where they are @done(2016-08-28)
+		- rewrite fits headers @done
+		- export sofi imaging and validate @done(2016-08-29)
+	- check rename of efosc spectra and sofa-imaging (use tid 348245 ASASSN-14jb = SN2014dq as example) @done(2016-08-28) @project(Data Ingest)
+	- fix the transientBucketId match for the sofi-imaging @done(2016-08-27) @project(Data Ingest)
+		- match transientBucketId against object name in raw data @done(2016-08-27)
+	- copy to ssdr3 release git-repo @done(2016-08-27) @project(Release Description)
+	- find alberto email about cummulative release - do I need to update for first 4 years? @done(2016-08-27) @project(Release Description)
+	- add ssdr3 tag to sofi imaging  @done(2016-08-27) @project(Data Ingest)
+	- create the view_sofi_imaing_ssdr3 view @done(2016-08-27) @project(Data Ingest)
+	- check the breakdown of imaging frames in the database - are they the same as 2 weeks ago @done(2016-08-27) @project(Data Ingest)
+	- send erkki low SNR spectra if any @done(2016-08-27) @project(Data Ingest)
+	- There are some EFOSC spectra with little or no trace. Once the spectra are in the database, extract out the names of the spectra with SN < 5 ish (get about 20 spectra), send them to Cosimo to check and trash frames with no trace @done(2016-08-27) @project(Checklist)
+	- perform the same checks on the sofi raw/reduced spectra data counts as I did for EFOSC spectra @done(2016-08-26) @project(Data Ingest)
+	- add ssdr3 tag to sofi spectra @done(2016-08-26) @project(Data Ingest)
+	- create the view_sofu_spectra_ssdr3 view @done(2016-08-26) @project(Data Ingest)
+	- check the breakdown of frame in the database - are they the same as 2 weeks ago @done(2016-08-26) @project(Data Ingest)
+	- match numbers of raw frames agains the reduced frames @done(2016-08-26) @project(Data Ingest)
+	- find the miss frames, if any, and work out where they are @done(2016-08-26) @project(Data Ingest)
+	- export sofi spectra and validate @done(2016-08-26) @project(Data Ingest)
+	- rewrite fits headers @done(2016-08-26) @project(Data Ingest)
+	- get the SSDR3 stats to work in marshall @done(2016-08-26) @project(Data Ingest)
+	- check the import of the SOFI - spectra on remotix @done(2016-08-25) @project(Data Ingest)
+	- recheck the number, make notes and close relevant github issues @done(2016-08-25) @project(Data Ingest)
+	- walk through the old (crap) EFOSC spectra and remove them from the database and file-system @done(2016-08-25) @project(Data Ingest)
+	- dump Cosimos new spectra into the marshall dropbox and run the importer @done(2016-08-25) @project(Data Ingest)
+	- cosimo to get back to me about the 14 missing frames @done(2016-08-25) @project(Data Ingest)
+	- export the EFOSC spectra - check file sizes @done(2016-08-24) @project(Data Ingest)
+	- update the ESO validator on VMs @done(2016-08-24) @project(Data Ingest)
+	- run the validator to find immediate bugs @done(2016-08-24) @project(Data Ingest)
+	- check the numbers of sb against si spectra -  make a note @done(2016-08-23) @project(Data Ingest)
+		- move ssdr3 to ssdr3 @done(2016-08-23)
+	- move the sofi spectra to the marshall-dropbox @done(2016-08-23) @project(Data Ingest)
+	- As of August 19, 2016 I have 1199 `si` frames and 1198 `sb` frames. So I'm missing about ~90 frames for each. Match the reduced frames again raw science frame to see which spectra didn’t make it. @done(2016-08-23) @project(Data Ingest)
+	- remove old efosc-spectra  from the database and file-system before adding cosimo’s new efosc-spectra  @done(2016-08-22) @project(Data Ingest)
+	- There or 2 or 3 spectra of a Ia with a spike in the trace, Cosimo to send me corrected frame so I can stitch the data to the correct header.fd  @done(2016-08-22) @project(Checklist)
+	- the `pm_update_eso_phaseIII_metadata_table` is having trouble finding this file `/misc/pessto/data/ntt_data/archive/2013/feb/efosc/spectra/reduced/MASTERJ093953.18+165_20130208_Gr13_Free_slit1.5_56456_1.fits`. Find and replace it. @done(2016-08-17) @project(Data Ingest)
+	- correct all other errors found in the marshall logs @done(2016-08-19) @project(Data Ingest)
+		- remove errors from TOCP import @flag @done(2016-08-17)
+		- remove errors from CRTS import @done(2016-08-19)
+	- generate a correct updatedFilepath for objects with a marshall_dropbox currentFilepath @done(2016-08-16) @project(Data Ingest)
+	- when updating the filepath, if the file is not at currentFilepath but is at updatedFilepath, correct the currentFilepath and currentFilename and set updatedFilepath and updatedFilename to null @done(2016-08-16) @project(Data Ingest)
+	- now move onto the transient catalogue @done(2016-08-16) @project(Clean Raw Data)
+	- create a snippets page with the commands do various things in SQL @done(2016-08-16) @project(Clean Raw Data)
+	- make sure there’s a database backup @done(2016-07-28) @project(Clean Raw Data)
+	- update pessto_engine with SQL changes @done(2016-07-28) @project(Clean Raw Data)
+	- release pessto_engine on live database @done(2016-07-28) @project(Clean Raw Data)
+	- get the raw data breakdowns to match up with database on mac @done(2016-07-28) @project(Clean Raw Data)
+	- rewrite the numbers tables to separate out starard star fields and science frames @done(2016-07-27) @project(Data Release)
+	EFOSC Imaging: @done(2016-07-27) @project(Data Release)
+		- open search radius to match the remaining science frames @done(2016-07-27)
+		- separate science frames (13) from standard star frames (8) @done(2016-07-27)
+	SOFI Imaging: @done(2016-07-27) @project(Data Release)
+		- separate science frames (13) from standard star frames (8) @done(2016-07-27)
+	- check the numbers of files in the database — update tables @done(2016-07-27) @project(Data Release)
+	- write a SQL script to give the brake down of frames for all 4 types and add tables to wiki @done(2016-07-27) @project(Data Release)
+	- workout out what ESO mean by calibration, science and acquisition and write note on my wiki @done(2016-07-27) @project(Data Release)
+	- fix the tags for calibration keys in database so numbers come out true @done(2016-07-27) @project(Data Release)
+	
+	
+	- read through emails for SSDR2 back to front and clip important info @done(2016-07-25) @project(PESSTO-ESO-SSDR3)
+	- link important URLs to SSDR3 project ... SSDR2 repo, the release description, validate or info @done(2016-07-25) @project(PESSTO-ESO-SSDR3)
+	- clip important info from the link list URLs  @done(2016-07-25) @project(PESSTO-ESO-SSDR3)
+	- tidy notes, review and plan next actions @done(2016-07-25) @project(PESSTO-ESO-SSDR3)
+	- clip notes from the SSDR2 release description (in project folder) @done(2016-07-25) @project(PESSTO-ESO-SSDR3)
+	- - look at transient catalogue from ssdr2 and plan out the fastest route to build new catalogue @done(2016-08-15) @project(Transient-Catalogue)
+	- Make a list of all objects/transient bucket ids in data - flag with efosc spectra, efosc imaging, sofi imaging, sofi spectra  @done(2016-08-15) @project(Transient-Catalogue)
+	- Make a list of all sources for which PESSTO has interacted with … PESSTO classification added, added to followup or followup complete @done(2016-08-15) @project(Transient-Catalogue)
+		- flag objects classified between 1-Mar-2014 - 1-May-2016 … transient catalogue @done(2016-08-15)
+	- check the last classification date in transient catalogue or make sure of continuity of next action … @done(2016-08-15) @project(Transient-Catalogue)
+	- list all of the transients we have classifications for from 1st March 2014 - 30-April-2016 in the transient catalogue spreadsheet @done(2016-08-15) @project(Transient-Catalogue)
+		select * from pesstoObjects p, transientBucketSummaries t where classificationDate > "2012-03-01" and classificationDate < "2014-03-01" and p.transientBucketId=t.transientBucketId and alertWorkflowLocation != "external alert released" @done(2016-08-15)
+		- look at the previous catalogue for the columns required https://github.com/thespacedoctor/pessto-ssdr2/tree/master/transient-catalogue @done(2016-08-15)
+		- flag those transients with followup data @done(2016-08-15)
+		- add a link to the atels it is mentioned in @done(2016-08-15)
+	- JUMP TO PHOTOMETRY CATALOGUE TASKS NOW @done(2016-08-15) @project(Transient-Catalogue)
+	- add the current photometry and transient sheets to git repo and link to notes and here @done(2016-07-25) @project(Transient-Catalogue)
+	- colour the previous rows light grey and lock values @done(2016-07-25) @project(Transient-Catalogue)
+	- refresh the mac marshall @done(2016-07-26) @project(Transient-Catalogue)
+	- cross-match transients against raw ntt data @done(2016-07-28) @project(Transient-Catalogue)

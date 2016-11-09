@@ -1,0 +1,17 @@
+	Photometry-Catalogue:
+	- compile a list of ALL objects in the marshall that have been added to the follow-up complete or follow-up lists
+		- flag objects already released in SSDR2
+	- remove objects that were added to the PESSTO Photometric catalogue in the last release — add a flag column in the marshall
+	- remove objects with very few data
+	
+	
+	
+	
+	- compiled a list of XXX targets that were added to the marshall BEFORE 30th April 2016 and which don’t appear in the multi-epoch photometry catalogue released alongside SSDR2 @hold(waiting on the transient catalogue object list to be compiled)
+		create MMD a table like this one: https://sites.google.com/a/pessto.org/wiki/pessto-operation-groups/data-reduction-and-quality-control-team/pessto-phase-iii-catalogue-end-of-year-2 with the objects I think require lightcurves (Object Name, PI, Paper Status PI Comment Re. Photometry Dataset).
+		A page has already been created here: https://sites.google.com/a/pessto.org/wiki/pessto-operation-groups/data-reduction-and-quality-control-team/pessto-phase-iii-catalogue-end-of-year-3
+	Photometry Requests:
+		- create some text for SJS to email to all@pessto @done(2016-07-25)
+		- ask SJS to send out another email requesting light curve data (see notes)
+	Final Checklist:
+		- make sure reference keyword points to the PESSTO publication https://ui.adsabs.harvard.edu/#abs/2015A&A...579A..40S/abstract

@@ -48,7 +48,7 @@ setup(name="tastic",
       install_requires=install_requires,
       test_suite='nose.collector',
       tests_require=['nose', 'nose-cover3'],
-      # entry_points={
-      #     'console_scripts': ['tastic=tastic.cl_utils:main'],
-      # },
+      entry_points={
+          'console_scripts': ['tastic=tastic.cl_utils:main'],
+      },
       zip_safe=False)

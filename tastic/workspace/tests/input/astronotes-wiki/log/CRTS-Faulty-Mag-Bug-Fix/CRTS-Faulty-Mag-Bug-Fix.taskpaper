@@ -1,0 +1,45 @@
+./CRTS-Faulty-Mag-Bug-Fix.md
+CRTS-Faulty-Mag-Bug-Fix:
+
+
+
+
+
+
+
+Archive:
+	my.cnf in /usr/local/mysql-5.6.20-osx10.8-x86_64 @done(2016-10-20)
+	- A script is run on the destination table to search for rows with $uniqueID = -1$. A conesearch is performed on the rows where $uniqueID > 0$, and if a match is found the uniqueID is copied from that row. If a match is not found a new uniqueID is given to the source (i.e. a new transient in the Marshall database). @done(2016-10-20)
+		- HMpTy cone search needs to return primary ID of the orphan row and transientBucketId of matched row @done(2016-10-20)
+	CRTS Data Importer: @done(2016-10-20)
+		- in the mysql procedure add an importer to import new discoveries into the marshall_discoveries table @done(2016-10-20)
+			- if name not in marshall_sources_discoveries then add to the marshall_sources_discoveries with marshallId = -1 @done(2016-10-20)
+			- crossmatch marshall_sources_discoveries with marshallId = -1 against marshall_sources (may have to do transientBucket for a while) @done(2016-10-20)
+			- if match found, update marshallId @done(2016-10-20)
+			- if no match found, create a new row in marshall_sources (row in marshall_sources_discoveries with marshallId = -1 will be updated on the next run) @done(2016-10-20)
+	@done(2016-10-20)
+	@done(2016-10-20)
+	@done(2016-10-20)
+	- update the ingester to run as detailed in the writeup @done(2016-10-20) @project(CRTS-Faulty-Mag-Bug-Fix / CRTS IMPORT)
+	- update the CRTS importer to get rows into the discovery and photometry tables @done(2016-10-18) @project(CRTS-Faulty-Mag-Bug-Fix / CRTS IMPORT)
+	- update the map tables from the CRTS importer @done(2016-10-18) @project(CRTS-Faulty-Mag-Bug-Fix / CRTS IMPORT)
+	- write a CL tool to tirrger the CRTS import @done(2016-10-18) @project(CRTS-Faulty-Mag-Bug-Fix / CRTS IMPORT)
+	- update the new ingester code write up @done(2016-10-18) @project(CRTS-Faulty-Mag-Bug-Fix / CRTS IMPORT)
+	- corssmath staged rows with committed rows and commit matches @done(2016-10-14) @project(Mapper Function)
+	- crossmatch one staged row with remaining staged rows, assign matched unique id @done(2016-10-14) @project(Mapper Function)
+	- write insert statements for all rows with updates out to file @done(2016-10-14) @project(Mapper Function)
+	- do an input with mysqlsucker @done(2016-10-14) @project(Mapper Function)
+	- find the distinct name, ra, deg of names not in transientBucket @done(2016-10-12) @project(Mapper Function)
+	- don’t allow CV in or at least archive them @done(2016-10-11) @project(Mapper Function)
+	- update the insert statement in the procedure to handle update on duplicates @done(2016-10-11) @project(Mapper Function)
+	- remove ssh tunnel settings from cl-tool @done(2016-10-11)
+	- move all default settings into the packages @done(2016-10-11)
+	- document hmpty and release latest version @done(2016-10-07) @project(HMpTy COnesearch)
+	- tidy snippets @done(2016-10-07) @project(HMpTy COnesearch)
+	- For sources in the survey table with no name found in the destination table, a different mysql procedure is used to read the column map from `map_survey_<destination>` in exactly the same way as in 1. except now with the *uniqueID* set to `-1`. @done(2016-10-05)
+	- add the column map for CRTS tables to the transient_map table @done(2016-10-03) @project(Mapper Function)
+	- read the columns from the mapper table @done(2016-10-04) @project(Mapper Function)
+	- create a function somewhere to update transient map @done(2016-10-03)
+	- generate the survey tables in ms @done(2016-09-30) @project(CRTS)
+	- generate list of the transientBucket column names @done(2016-09-30) @project(CRTS)
+	- add the transientBucket column names to map_surveys_transientBucket @done(2016-09-30) @project(CRTS)

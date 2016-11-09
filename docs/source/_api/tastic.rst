@@ -12,6 +12,7 @@ Subpackages
 .. toctree::
 
     tastic.commonutils
+    tastic.workspace
 
 Submodules
 ----------

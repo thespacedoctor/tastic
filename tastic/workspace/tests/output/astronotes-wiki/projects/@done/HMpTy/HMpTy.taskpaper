@@ -1,0 +1,14 @@
+HMpTy:
+	- add empty logger to all my code
+	Release:
+	NEXT PROJECTS:
+		- fix the CRTS importer in the marshall to do a cone search on the transientBucket and import new sources and update recurrent sources
+		- replace add_HTMIds_to_mysql_tables everywhere the HMPTY method to ad HTMIDs
+		- bake the cone search into sherlock
+		- update all marshall tables with new HTMIDs
+		- update all conesearch tables with new HTMIDs
+		- replace cone search in sherlock with hmpty conesearch
+		- replace cone search in breaker with hmpty conesearch
+		- replace cone search in neddy with hmpty conesearch
+		- replace pm_conesearch_transientBucket with hmpty conesearch .. I could either replace the code in this function, or replace the code everywhere that uses  pm_conesearch_transientBucket
+		- bake the cone search into sloancone??
