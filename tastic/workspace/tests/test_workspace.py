@@ -43,13 +43,6 @@ shutil.copytree(pathToInputDir, pathToOutputDir)
 
 workspaceRoot = pathToOutputDir + "/astronotes-wiki"
 
-# Recursively create missing directories
-# if not os.path.exists(pathToOutputDir):
-#     os.makedirs(pathToOutputDir)
-
-# xt-setup-unit-testing-files-and-folders
-# shutil.copytree(pathToInputDir, pathToOutputDir)
-
 
 class test_workspace():
 
