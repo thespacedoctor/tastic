@@ -4,6 +4,11 @@
 PESSTO-ESO-SSDR3: @due(3)
 Send Final Reduced Release to WiseRep: @flag
 	See here for details about last releases Wiserep export: airmail://message?mail=david.young%40pessto.org&messageid=CAEHLACpONudE6PLrPWRUVg%2BQpghVSDptZ%2Bmgo30YrjY5TxByrw%40mail.gmail.com
+	See here for details about last releases Wiserep export:
+	See here for details about last releases Wiserep export:
+	See here for details about last releases Wiserep export:
+	See here for details about last releases Wiserep export:
+	See here for details about last releases Wiserep export:
 Checklist: @wait
 	- copy cosimo and errki github log notes to my wiki @hold
 	- lock rows when a release has been submitted to stop file updates
@@ -11,26 +16,36 @@ Checklist: @wait
 	- add the EFFRON fix command to cron scripts
 Transient-Catalogue:
 	./transient-catalogue.md
+	Database Table:
+	PESSTO Classified Sources:
+		find: ^(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*$
+		replace: update phase_iii_transient_catalogue_ssdr3 set atel_ra = "\2", atel_dec="\3", atel_discovery_date="\4", atel_discovery_survey="\5", atel_discovery_mag=\6, atel_transient_redshift=\7, atel_classification="\8", atel_classification_phase="\9" where TRANSIENT_ID = "\1";
+		- parse the following from the atels source name, notes, classification phase days, classification date, disc date, trans redshift, classification type
+		- use the table to query and compare atel to marshall values   update marshall where needed @flag
+		find:
+		replace:
+		find:
+		replace:
+		find:
+		replace:
+		find:
+		replace:
+		find:
+		replace:
+	Non-PESSTO Classified Sources: @wait
+		- same task as for PESSTO classified sources
+		- check all atel text for source where TRANS CLASS SOURCE =atel to make sure the classification has come from that atel
 	ATel Matching: @due
 		- read through all Atels and make sure 
 			- the best classification is given
 			- the best phase estimate is given (qualitative and quantitative)
 	Host Matches: @flag
 		- for each transient do the following staged searches until a host is found - remember to record spec redshift or photoz and the stage at which the host is found
-			- 2.  NED Unclassified Extragalactic Candidates with 25" search radius @due
-			- 5.  NED Classified Extragalactic Source with a 100" search radius @wait
 			- 1.  NED Classified Extragalactic Source with 25" search radius
+			- 2.  NED Unclassified Extragalactic Candidates with 25" search radius @due
 			- 3.  SDSS DR12 Spectroscopic Sources with 25" search radius
 			- 4.  SDSS DR12 Photometric Sources with a 25" search radius
-	Non-PESSTO Classified Sources: @wait
-		- same task as for PESSTO classified sources
-		- check all atel text for source where TRANS CLASS SOURCE =atel to make sure the classification has come from that atel
-	Database Table:
-	PESSTO Classified Sources:
-		find: ^(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*$
-		replace: update phase_iii_transient_catalogue_ssdr3 set atel_ra = "\2", atel_dec="\3", atel_discovery_date="\4", atel_discovery_survey="\5", atel_discovery_mag=\6, atel_transient_redshift=\7, atel_classification="\8", atel_classification_phase="\9" where TRANSIENT_ID = "\1";
-		- use the table to query and compare atel to marshall values   update marshall where needed @flag
-		- parse the following from the atels source name, notes, classification phase days, classification date, disc date, trans redshift, classification type
+			- 5.  NED Classified Extragalactic Source with a 100" search radius @wait
 Release Description:
 New PhaseIII Changes:
 	- Definition of catalogue data links. The keywords TXP3Ri and TXP3Ci, which were previously used to define the target catalogue of a data link between two catalogues, are being replaced by the new TXRGFi keyword. TXRGFi (type character string) should declare the filename of the target catalog in terms of the ORIGFILE name

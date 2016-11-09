@@ -29,6 +29,8 @@ class baseClass():
 
     def __init__(self, matchObject, parentObject=None):
         self.meta = matchObject
+        if self.meta["content"] == None:
+            self.meta["content"] = ""
         self.parent = parentObject
 
     @property
@@ -69,7 +71,7 @@ class baseClass():
         """
         return self._get_object(
             regex=re.compile(
-                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)+)', re.UNICODE),
+                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)+)?', re.UNICODE),
             objectType="project",
             content=None
         )
