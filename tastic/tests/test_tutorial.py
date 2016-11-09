@@ -12,8 +12,7 @@ su = tools(
     docString=__doc__,
     logLevel="DEBUG",
     options_first=False,
-    projectName="tastic",
-    tunnel=False
+    projectName="tastic"
 )
 arguments, settings, log, dbConn = su.setup()
 
@@ -71,13 +70,14 @@ class test_tastic():
         doc.sort_projects("@due, @flag, @hold, @next, @someday, @wait")
         doc.save()
 
-        gardenProject.refresh
+        # gardenProject.refresh
 
         # ADD A NEW PROJECT
         shedProject = gardenProject.add_project(
             title="build a shed",
             tags="@someday @garden"
         )
+        gardenProject.refresh
 
         researchShedProject = shedProject.add_project(
             title="research shed designs",
@@ -105,6 +105,7 @@ class test_tastic():
         for t in coffee.tasks:
             t.done("all")
 
+        print ""
         aTask = researchShedProject.add_task(
             "look for 5 videos on youtube", "@online")
 

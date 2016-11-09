@@ -3,7 +3,34 @@ tastic
 
 *A python package for working with taskpaper documents*.
 
+Here's a summary of what's included in the python package:
 
+.. include:: /classes_and_functions.rst
+
+Command-Line Usage
+==================
+
+.. code-block:: bash 
+   
+    
+    Documentation for tastic can be found here: http://tastic-for-taskpaper.readthedocs.io/en/stable/
+    
+    
+    Usage:
+        tastic init
+        tastic sort <pathToFileOrWorkspace> [-s <pathToSettingsFile>]
+        tastic archive <pathToFileOrWorkspace> [-s <pathToSettingsFile>]
+    
+    Options:
+        init                     setup the tastic settings file for the first time
+        sort                     sort a taskpaper file or directory containing taskpaper files via workflow tags in settings file
+        archive                  move done tasks in the 'Archive' projects within taskpaper documents into markdown tasklog files
+    
+        pathToFileOrWorkspace    give a path to an individual taskpaper file or the root of a workspace containing taskpaper files
+        -h, --help               show this help message
+        -v, --version            show version
+        -s, --settings           the settings file
+    
     
 
 Documentation
@@ -50,6 +77,10 @@ This means you can modify the code from your cloned repo:
 `Pull requests <https://github.com/thespacedoctor/tastic/pulls>`__
 are welcomed!
 
+Sublime Snippets
+~~~~~~~~~~~~~~~~
+
+If you use `Sublime Text <https://www.sublimetext.com/>`_ as your code editor, and you're planning to develop your own python code with tastic, you might find `my Sublime Snippets <https://github.com/thespacedoctor/tastic-Sublime-Snippets>`_ useful. 
 
 Issues
 ------

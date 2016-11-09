@@ -1,0 +1,41 @@
+tphorce-plots:
+	./tphorce-plots.md
+	
+- x-range :  @done(2016-09-12)
+	- only allow closest non-detection  within last 30 days to affect limit on both sides of LC - see 16crg & 16crj & 16cio (rightside limit) @done(2016-09-12)
+- y-range: @done(2016-09-12)
+	- only allow the   closest non-detection  within last 30 days to affect the faint mag limit @done(2016-09-12)
+- ATLAS16crj has too many limits @done(2016-09-12)
+- 16cpw has a y-range that is too large @done(2016-09-12)
+- the legend is too large @done(2016-09-12)
+- ATLAS16cob — pad y-axis label more when counts > 100 @done(2016-09-12)
+- 16bdi - padding above SN not enough @done(2016-09-12)
+
+	- fix discovery mag — see 16cio @done(2016-09-12)
+- remove FP from ‘ATLAS FP’ in magnitude lists
+
+
+Archive:
+	- write a separate ATLAS LC generator command @done(2016-09-12) @project(tphorce-plots)
+		- for each of these objects @done(2016-09-12)
+			- create the LC and place it in transient directory @done(2016-09-12)
+	- if ATLAS LC exist have webapp display it and not the master LC  @done(2016-09-12) @project(tphorce-plots)
+	- add ATLAS light curve flag to the pessto objects @done(2016-09-09) @project(tphorce-plots)
+	- sql query to find the objects that need a LC update @done(2016-09-09) @project(tphorce-plots)
+	- get the data needed to build the ATLAS LC @done(2016-09-09) @project(tphorce-plots)
+	- write an importer for the `fs_atlas_forced_phot` table @done(2016-09-09) @project(tphorce-plots)
+		- once an object has both ALTAS FP survey, remove the old ATLAS points @done(2016-09-09)
+	- write a script to dump the most recent 1 week forced phot from atlas to dry home area on psdb3 @done(2016-09-08) @project(tphorce-plots)
+	- rsync the dump to VM03 /tmp @done(2016-09-08) @project(tphorce-plots)
+	- convert inserts to insert ignore in the dump @done(2016-09-08) @project(tphorce-plots)
+	- import the table to fs_atlas_forced in marshall database @done(2016-09-08) @project(tphorce-plots)
+	- add to marshall txt download http://psweb.mp.qub.ac.uk/sne/atlas3/lightcurveforced/1213525421211913900/ @done(2016-09-08) @project(tphorce-plots)
+	- import recent database @done(2016-09-08) @project(tphorce-plots)
+	-  @done(2016-09-08) @project(tphorce-plots)
+	- add legend @done(2016-09-08) @project(tphorce-plots)
+	- increase resolution @done(2016-09-07) @project(tphorce-plots)
+	- make lightcurves more square @done(2016-09-07) @project(tphorce-plots)
+	- add top axis for relative time @done(2016-09-07) @project(tphorce-plots)
+	- duplicate the tphorce plot script to `atlas-db-tphorce-plotter` @done(2016-09-07) @project(tphorce-plots)
+	- install a ssh tunnel to psdb3 @done(2016-09-07) @project(tphorce-plots)
+	- get script to run query @done(2016-09-07) @project(tphorce-plots)

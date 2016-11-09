@@ -1,0 +1,7 @@
+write-new-importers:
+	./write-new-importers.md
+	- write the asassn importer
+	- docuemnt and release a version of the marshallEngine
+	- create a frankenstein template for a survey importer
+	- create a frankenstein workflow to generate a marshall importer
+	- write next importer ./write-new-importers.md

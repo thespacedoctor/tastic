@@ -1,0 +1,19 @@
+Sherlock:
+	- add github issues here @flag
+	
+	Database Table Maintainance:
+		- add HTMIDs columns and indices to crossmatch tables @flag
+		- add HTMID values to all my crossmatch tables (for new conesearch system - 10, 13, 16)
+		
+	HMpTy Integration:
+		- integrate the new HMpTy tools into sherlock:
+			- a) crossmatch two lists of coordinates against one another
+			- b) conesearch against a database query
+	Result Rendering:
+		- add the new fundamentals list of dictionary rendering tools to render the crossmatch results in the terminal
+	MySQLSucker:
+		- integrate the fundamental mysql sucker tool by exporting the crossmatch results to mysql insert scripts
+		
+		
+	Tidy Up When Finished:
+		- remove HTMID20 and cx, cy, cz from all database tables

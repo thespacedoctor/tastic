@@ -1,0 +1,42 @@
+./marshall-database-scheme-update.md
+
+
+surveys to marshall mapper functions: @flag
+	- write the CL-util to import data into the transientBucket using the mapper table @flag
+		- create ablilty to import newly modified survey data only (give an int for number of days)
+		- document code to date (some info here: ./marshall-database-scheme-update.md )
+		- create CL tool to ingest all survey tables
+		- write up tutorial
+
+
+- write the command to add rows from transientBucket to marshall_sources_spec table
+
+transientsummary:
+	- update the transientsummary code to use new tables
+
+
+marshall webapp updates:
+	- update lightcurve webapp code to read from photometry table
+
+marshall_sources:
+	- write command to update this table with HTMIds
+
+marshall_sources_discoveries:
+	- get marshall webapp to read AKAs from this table
+	- an TNS sources to this table that are not associated with a survey (e.g. amateurs)
+
+- rename transientBucket - marshall_sources_discoveries everywhere in database and code
+
+Archive:
+	- write a CL tool to trigger the ingest @done(2016-10-20)
+	- release all new code @done(2016-10-20)
+	marshall-database-scheme-update: @done(2016-10-20)
+		- trying to added rows to the `marshall_sources_discoveries` table @flag @done(2016-10-20)
+			- write the command to add rows from transientBucket to marshall_sources_discoveries table @done(2016-10-20)
+	- write the command to add rows from transientBucket to marshall_sources_phot table @done(2016-10-20)
+	- create the CRTS import CL-tool @done(2016-10-20) @project(Mapper Function)
+	- rewrite the mapper to use the adapted survey_disc_crts_ … tables for discoveries @done(2016-10-20) @project(Mapper Function)
+	- get the code to read the detection tables using the SAME map as the discoveries map (mysql procedure?) @done(2016-10-20) @project(Mapper Function)
+	- remove the duplicate names from this query before trying to add source names to `marshall_sources_discoveries` @done(2016-09-27) @project(marshall-database-scheme-update)
+		select distinct transientBucketId, survey, name from transientBucket where name in (select name from (select count(*) as count, transientBucketId, name, survey from (select distinct transientBucketId, name, survey from transientBucket where survey not in ("atel-coords","atel-names", "bright sn list", "atel", "pessto", "TNS", "ATLAS FP") and name not like "AT2%" and name not like "SN20%" and name not like "SN20%" and name not like "SN21%"  and name not like "SN22%" order by name) as c group by name) d where count > 1)  and survey not in ("atel-coords","atel-names", "bright sn list", "atel", "pessto", "TNS", "ATLAS FP") order by name, dateCreated; @done(2016-09-27)
+	- reomove the HTM Ids as imported from transientBucket @done(2016-10-17) @project(Marshall Sources)

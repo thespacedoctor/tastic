@@ -8,7 +8,8 @@ Subpackages
    :template: autosummary/subpackage.rst
 
    tastic
-   tastic.commonutils 
+   tastic.commonutils
+   tastic.workspace 
 
 Modules
 -----------
@@ -28,6 +29,7 @@ Classes
    :toctree: _autosummary
    :nosignatures:
 
+   tastic.workspace.workspace
    tastic.tastic.baseClass
    tastic.tastic.document
    tastic.tastic.note
@@ -42,4 +44,4 @@ Functions
    :toctree: _autosummary
    :nosignatures:
 
-   tastic.cl_utils.tab_complete 
+    

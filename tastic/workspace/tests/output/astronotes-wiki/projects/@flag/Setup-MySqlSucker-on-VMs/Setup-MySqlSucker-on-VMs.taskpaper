@@ -1,0 +1,4 @@
+- walk through the mysql commands in the VM01, VM02 and VM03 cronscrtipts and convert to use mysql sucker
+	update all commands on VM01, VM02 & VM03 to use mysql_config_editor set --login-path=unittesting --host=localhost --user=unittesting --password
+Setup-MySqlSucker-on-VMs:
+	./Setup-MySqlSucker-on-VMs.md   some note already written

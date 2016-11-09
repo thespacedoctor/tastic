@@ -1,0 +1,13 @@
+- x-range :  @done(2016-09-12)
+	- only allow closest non-detection  within last 30 days to affect limit on both sides of LC - see 16crg & 16crj & 16cio (rightside limit) @done(2016-09-12)
+- y-range: @done(2016-09-12)
+	- only allow the   closest non-detection  within last 30 days to affect the faint mag limit @done(2016-09-12)
+- ATLAS16crj has too many limits @done(2016-09-12)
+- 16cpw has a y-range that is too large @done(2016-09-12)
+- the legend is too large @done(2016-09-12)
+- ATLAS16cob   pad y-axis label more when counts > 100 @done(2016-09-12)
+- 16bdi - padding above SN not enough @done(2016-09-12)
+	- fix discovery mag   see 16cio @done(2016-09-12)
+- remove FP from  ATLAS FP  in magnitude lists
+tphorce-plots:
+	./tphorce-plots.md

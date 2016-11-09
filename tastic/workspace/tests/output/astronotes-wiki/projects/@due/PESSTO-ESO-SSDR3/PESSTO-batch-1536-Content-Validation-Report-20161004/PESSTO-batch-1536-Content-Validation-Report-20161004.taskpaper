@@ -1,0 +1,37 @@
+- ASASSN14lp: the correct identifier for this ASASSN object should be ASASSN-14lp 
+	- please modify the data (spectra and images)
+	- re-upload
+	- change the name also in the release description (as per R12).
+- The STD fields you uploaded do not seem to qualify for Phase 3 publication
+	- remove them from the release
+	- remove them from the batch on FTP site
+	- change the number of images detailed in the release description
+- cross-check and make sure no spectrum has gone lost for the following objects (you have provided only images:)
+	- MLS111022-000018+000321
+	- SN1986G
+- Scatter in (RA,DEC) of spectra .. The following 4 objects a spread higher than 3 arcsec has been found in the (RA,DEC) of their spectra. Please fix the spectral coordinates such that all spectra for a source always show the same RA,DEC.
+	- [R4.1] ASASSN-14gm (about 8 arcsec)
+	- [R4.2] ASASSN-14ha (up to more than 8 arcmin)
+	- [R4.3] LSQ16ar (up to more than 7 hours in RA!)
+	- [R4.4] PESSTOESO154-G10 ... scatter reaches more than 30 arcsec, might be SN2013fc or SN2014eg
+- [R5] (RA,DEC) values in the header of the images ... the (RA,DEC) values of the images must report the position of the center of the field of view of the image.
+	- can I regenerate Alberto s centre coordinate list with database information?
+	- fix the headers with the correct (RA,DEC)
+	- reupload images to batch
+- [R6] MLS111022-000018+000321 wrong coordinates in the FITS card comment. Fix the following:
+	- MLS111022-000018+000_20141114_H_merge_57621_1.fits OBJECT = 'MLS111022-000018+000321' / Original target. (this one is ok??)
+	- MLS111022-000018+000_20141114_J_merge_57621_1.fits OBJECT = 'MLS111022-000018+000321' / Original target.
+	- MLS111022-000018+000_20141114_Ks_merge_57621_1.fits OBJECT = 'MLS111022-000018+000321' / Original target
+- [R7] MLS111022-000018+000321 WRONG PROCESSING? Images for OBJECT = 'MLS111022-000018+000' 
+	- blinked images for MLS111022-000018+000321 one after the other and make gif
+	- show that the easter part of the 3 images matches very well in all 3 files, while the western part of one image does not match the other two.
+	- Work out what the issue is and send action to erkki
+- Image quality: SN2013hx_20141229_Ks_merge_57621_1.fits shows a coaddition with wrong offsets
+	- check the image and issues related to the image
+	- determine next action
+- [R9] Change the release description ... add a well visible comment stating that the new version of the catalogs will be provided soon.
+- [R10] Typo in Release Content page 2: Please change from: "In total there are 2853 EFOSC2 spectra..." to: "In totale there are 2852 EFOSC2 spectra  
+- Typo: In Table 3, please change OGLE-2012SN-006 with OGLE-2012-SN-006 (missing hyphen).
+- Please change ASASSN14lp to the corrected ASASSN-14lp.
+- please remove references to standard stars in the release description.
+- Typo: In Table 4, please change the EFOSC2 number of 1d and 2d spectra from 2853 to 2852
