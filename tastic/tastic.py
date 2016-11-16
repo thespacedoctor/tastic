@@ -71,7 +71,7 @@ class baseClass():
         """
         return self._get_object(
             regex=re.compile(
-                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)+)?', re.UNICODE),
+                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*|\n)+)', re.UNICODE),
             objectType="project",
             content=None
         )
@@ -798,7 +798,7 @@ class baseClass():
 
         newProject = self._get_object(
             regex=re.compile(
-                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)*)', re.UNICODE),
+                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*|\n)+)', re.UNICODE),
             objectType="project",
             content=project
         )
@@ -1297,7 +1297,7 @@ class document(baseClass):
 
         self.projects = self._get_object(
             regex=re.compile(
-                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*)+)', re.UNICODE),
+                r'((?<=\n)|(?<=^))(?P<title>(?!\[Searches\]|- )\S.*?:(?!\S)) *(?P<tagString>( *?@[^(\s]+(\([^)]*\))?)+)?(?P<content>(\n(( |\t)+\S.*)|\n( |\t)*|\n)+)', re.UNICODE),
             objectType="project",
             content=None
         )
