@@ -1,6 +1,0 @@
-Data-Release:
-	- symlink .config on VMs into dropbox ~/Dropbox/config/<machinename>/<appname> @done(2016-08-15)
-	- on cronjobs on VMs get the logs to write to ~/.config/pessto_marshall/logs/ @done(2016-08-15)
-	- make aliases for the cronscripts > std out and logs @done(2016-08-15)
-	- run the 12hrs script and view the logs
-		- write a hazel rule to report errors on my mac

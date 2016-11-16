@@ -1,4 +1,0 @@
-./import-lsq-detections-and-non-detections.md
-import-lsq-detections-and-non-detections:
-	
-	- import LSQ non-detections mags into marshall and write up notes here: ./import-lsq-detections-and-non-detections.md

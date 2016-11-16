@@ -1,9 +1,0 @@
-marshall-lightcurve-updates:
-	./marshall-lightcurve-updates.md
-Import all Errors and Non-Detections:
-	- make sure we are getting all non-detection limits and errors. see table below in link
-		see here: /Users/Dave/Dropbox/notes/astronotes-wiki/projects/@flag/marshall-database-scheme-update/marshall-database-scheme-update.md
-New Lightcurves Plotting Code:
-	- copy atlas code to marshallEngine lightcurves
-	- get code to read limits and magnitudes (with errors) and slit into surveys and filters
-	- plot all as black to start
