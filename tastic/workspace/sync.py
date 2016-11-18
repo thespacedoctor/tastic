@@ -15,10 +15,11 @@ import os
 import codecs
 os.environ['TERM'] = 'vt100'
 from fundamentals import tools
-
+from tastic.tastic import document
 
 # OR YOU CAN REMOVE THE CLASS BELOW AND ADD A WORKER FUNCTION ... SNIPPET TRIGGER BELOW
 # xt-worker-def
+
 
 class sync():
     """
@@ -28,6 +29,7 @@ class sync():
         - ``log`` -- logger
         - ``settings`` -- the settings dictionary
         - ``workspaceRoot`` -- path to the root folder of a workspace containing taskpaper files
+        - ``workspaceName`` -- the name of the workspace
         - ``syncFolder`` -- path to a folder to host your synced tag taskpaper documents.
 
     **Usage:**
@@ -54,6 +56,7 @@ class sync():
             self,
             log,
             workspaceRoot,
+            workspaceName,
             syncFolder,
             settings=False
     ):
@@ -62,8 +65,12 @@ class sync():
         self.settings = settings
         self.workspaceRoot = workspaceRoot
         self.syncFolder = syncFolder
+        self.workflowTags = self.settings["workflowTags"]
+        syncTags = self.settings["syncTags"].replace("@", "").split(",")
+        self.syncTags = []
+        self.syncTags[:] = ["@" + s.strip() for s in syncTags]
+        self.workspaceName = workspaceName
 
-        self.syncTags = self.settings["syncTags"].split(",")
         # xt-self-arg-tmpx
 
         # 2. @flagged: what are the default attrributes each object could have? Add them to variable attribute set here
@@ -79,7 +86,6 @@ class sync():
 
         return None
 
-    # Method Attributes
     def sync(self):
         """
         *sync the sync object*
@@ -100,7 +106,31 @@ class sync():
         """
         self.log.info('starting the ``sync`` method')
 
-        self.generate_sync_documents()
+        taskpaperFiles = self._get_all_taskpaper_files(self.workspaceRoot)
+
+        content = self.get_tagged_content_from_taskpaper_files(taskpaperFiles)
+        if len(content):
+            content = content.decode("utf-8")
+            pathToWriteFile = self.syncFolder + "/" + self.workspaceName + ".taskpaper"
+            try:
+                self.log.debug("attempting to open the file %s" %
+                               (pathToWriteFile,))
+                writeFile = codecs.open(
+                    pathToWriteFile, encoding='utf-8', mode='w')
+            except IOError, e:
+                message = 'could not open the file %s' % (pathToWriteFile,)
+                self.log.critical(message)
+                raise IOError(message)
+            writeFile.write(content)
+            writeFile.close()
+            # OPEN TASKPAPER FILE
+            doc = document(self.syncFolder + "/" +
+                           self.workspaceName + ".taskpaper")
+            doc.sort_projects(workflowTags=self.workflowTags)
+            doc.sort_tasks(workflowTags=self.workflowTags)
+            doc.save()
+
+        # self.generate_sync_documents()
 
         self.log.info('completed the ``sync`` method')
         return None
@@ -174,9 +204,54 @@ class sync():
         self.log.info('completed the ``_get_all_taskpaper_files`` method')
         return taskpaperFiles
 
+    def get_tagged_content_from_taskpaper_files(
+            self,
+            taskpaperFiles):
+        """*get tagged content from taskpaper files*
+
+        **Key Arguments:**
+            - ``tag`` -- the tag to search for
+            - ``taskpaperFiles`` -- paths to all taskpaper files in workspace
+
+        **Return:**
+            - ``content`` -- the given tagged content of all taskpaper files in a workspace
+
+        **Usage:**
+            ..  todo::
+
+                - add usage info
+                - create a sublime snippet for usage
+                - update package tutorial if needed
+
+            .. code-block:: python 
+
+                usage code 
+
+        """
+        self.log.info(
+            'starting the ``get_tagged_content_from_taskpaper_files`` method')
+
+        content = ""
+        for tp in taskpaperFiles:
+            # OPEN TASKPAPER FILE
+            doc = document(tp)
+            basename = os.path.basename(tp).replace("-", " ").upper()
+
+            for tag in self.syncTags:
+                filteredTasks = doc.tagged_tasks(tag)
+                for ft in filteredTasks:
+                    if "done" not in "".join(ft.tags):
+                        content += ft.to_string() + "\n"
+
+        self.log.info(
+            'completed the ``get_tagged_content_from_taskpaper_files`` method')
+        return content
+
     # use the tab-trigger below for new method
     # xt-class-method
 
     # 5. @flagged: what actions of the base class(es) need ammending? ammend them here
     # Override Method Attributes
     # method-override-tmpx
+
+    # newContent = "- [%(title)s](dryx-open://%(tp)s) %(theseTags)s  \n" % locals()

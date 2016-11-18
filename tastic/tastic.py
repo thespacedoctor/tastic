@@ -373,9 +373,9 @@ class baseClass():
             for n in notes:
                 if len(n.title.strip()):
                     if not self.parent and len(objectString) == 0:
-                        objectString += indent + n.title.strip()
+                        objectString += indent + n.title.strip() + n.content
                     else:
-                        objectString += "\n" + indent + n.title.strip()
+                        objectString += "\n" + indent + n.title.strip() + n.content
         except:
             pass
 
@@ -1018,7 +1018,7 @@ class baseClass():
 
         for n in self.notes:
             if len(n.title.strip()):
-                notestr += "\n" + n.title.strip()
+                notestr += "\n" + n.title.strip() + n.content
 
         return notestr
 

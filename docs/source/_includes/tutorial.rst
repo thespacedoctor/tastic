@@ -22,7 +22,7 @@ In the settings file you will find a set of workflow tags, which you can adapt t
 
 .. code-block:: yaml 
     
-    worflowTags: "@due, @flag, @hold, @next, @someday, @wait"
+    workflowTags: "@due, @flag, @hold, @next, @someday, @wait"
 
 To sort an individual taskpaper document's projects and tasks via these workflow tags (ordered from most to least prioritised) use the command:
 

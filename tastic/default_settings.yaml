@@ -1,6 +1,6 @@
 version: 1
 
-worflowTags: "@due, @flag, @hold, @next, @someday, @wait"
+workflowTags: "@due, @flag, @hold, @next, @someday, @wait"
 
 logging settings:
     formatters:
