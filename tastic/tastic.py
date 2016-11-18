@@ -1137,7 +1137,7 @@ class baseClass():
         # THIS OBJECT
         oldContent = self.to_string(indentLevel=1)
         newContent = self.to_string(
-            indentLevel=1, notes=self.notes + newNote)
+            indentLevel=1)
 
         if self.parent:
             self.parent._update_document_tree(
@@ -1145,15 +1145,14 @@ class baseClass():
                 newContent=newContent
             )
 
+        self.notes = self.notes + newNote
         self.content = self.content.replace(self.to_string(indentLevel=0, title=False), self.to_string(
-            indentLevel=0, title=False, notes=self.notes + newNote))
+            indentLevel=0, title=False))
 
         doc = self
         while doc.parent:
             doc = doc.parent
         doc.refresh
-
-        self.refresh
 
         return newNote[0]
 

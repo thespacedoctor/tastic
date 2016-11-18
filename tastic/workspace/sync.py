@@ -109,26 +109,7 @@ class sync():
         taskpaperFiles = self._get_all_taskpaper_files(self.workspaceRoot)
 
         content = self.get_tagged_content_from_taskpaper_files(taskpaperFiles)
-        if len(content):
-            content = content.decode("utf-8")
-            pathToWriteFile = self.syncFolder + "/" + self.workspaceName + ".taskpaper"
-            try:
-                self.log.debug("attempting to open the file %s" %
-                               (pathToWriteFile,))
-                writeFile = codecs.open(
-                    pathToWriteFile, encoding='utf-8', mode='w')
-            except IOError, e:
-                message = 'could not open the file %s' % (pathToWriteFile,)
-                self.log.critical(message)
-                raise IOError(message)
-            writeFile.write(content)
-            writeFile.close()
-            # OPEN TASKPAPER FILE
-            doc = document(self.syncFolder + "/" +
-                           self.workspaceName + ".taskpaper")
-            doc.sort_projects(workflowTags=self.workflowTags)
-            doc.sort_tasks(workflowTags=self.workflowTags)
-            doc.save()
+        taskpaperDocPath = self.create_single_taskpaper_task_list(content)
 
         # self.generate_sync_documents()
 
@@ -241,11 +222,67 @@ class sync():
                 filteredTasks = doc.tagged_tasks(tag)
                 for ft in filteredTasks:
                     if "done" not in "".join(ft.tags):
+                        if "Project" in ft.parent.__repr__():
+                            thisNote = tp + " > " + ft.parent.title[:-1]
+                        else:
+                            thisNote = tp
+                        ft.add_note(thisNote)
                         content += ft.to_string() + "\n"
 
         self.log.info(
             'completed the ``get_tagged_content_from_taskpaper_files`` method')
         return content
+
+    def create_single_taskpaper_task_list(
+            self,
+            content):
+        """*create single, sorted taskpaper task list from content pulled in from all of the workspace taskpaper docs*
+
+        **Key Arguments:**
+            - ``content`` -- the content to add to the taskpaper task index
+
+        **Return:**
+            - ``taskpaperDocPath`` -- path to the task index taskpaper doc
+
+        **Usage:**
+            ..  todo::
+
+                - add usage info
+                - create a sublime snippet for usage
+                - update package tutorial if needed
+
+            .. code-block:: python 
+
+                usage code 
+
+        """
+        self.log.info(
+            'starting the ``create_single_taskpaper_task_list`` method')
+
+        if len(content):
+            content = content.decode("utf-8")
+            taskpaperDocPath = self.syncFolder + "/" + self.workspaceName + ".taskpaper"
+            try:
+                self.log.debug("attempting to open the file %s" %
+                               (taskpaperDocPath,))
+                writeFile = codecs.open(
+                    taskpaperDocPath, encoding='utf-8', mode='w')
+            except IOError, e:
+                message = 'could not open the file %s' % (taskpaperDocPath,)
+                self.log.critical(message)
+                raise IOError(message)
+            writeFile.write(content)
+            writeFile.close()
+            # OPEN TASKPAPER FILE
+            doc = document(self.syncFolder + "/" +
+                           self.workspaceName + ".taskpaper")
+            doc.sort_projects(workflowTags=self.workflowTags)
+            doc.sort_tasks(workflowTags=self.workflowTags)
+            doc.save()
+
+        self.log.info(
+            'completed the ``create_single_taskpaper_task_list`` method')
+        return taskpaperDocPath
 
     # use the tab-trigger below for new method
     # xt-class-method
