@@ -93,7 +93,7 @@ class workspace():
 
             .. code-block:: yaml
 
-                worflowTags: "@due, @flag, @hold, @next, @someday, @wait" 
+                workflowTags: "@due, @flag, @hold, @next, @someday, @wait" 
 
             use the ``sort()`` method:
 
@@ -173,8 +173,8 @@ class workspace():
         self.log.info("sorting taskpaper file %(taskpaperPath)s" % locals())
         doc = document(taskpaperPath)
         doc.tidy()
-        doc.sort_tasks(self.settings["worflowTags"])
-        doc.sort_projects(self.settings["worflowTags"])
+        doc.sort_tasks(self.settings["workflowTags"])
+        doc.sort_projects(self.settings["workflowTags"])
         doc.save()
 
         self.log.info('completed the ``_sort_tp_file`` method')

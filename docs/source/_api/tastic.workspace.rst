@@ -11,5 +11,6 @@ Submodules
 
 .. toctree::
 
+   tastic.workspace.sync
    tastic.workspace.workspace
 
