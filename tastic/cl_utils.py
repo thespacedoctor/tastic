@@ -8,6 +8,7 @@ Usage:
     tastic init
     tastic sort <pathToFileOrWorkspace> [-s <pathToSettingsFile>]
     tastic archive <pathToFileOrWorkspace> [-s <pathToSettingsFile>]
+    tastic sync <pathToWorkspace> <workspaceName> <pathToSyncFolder> [-s <pathToSettingsFile>]
 
 Options:
     init                     setup the tastic settings file for the first time
@@ -15,6 +16,9 @@ Options:
     archive                  move done tasks in the 'Archive' projects within taskpaper documents into markdown tasklog files
 
     pathToFileOrWorkspace    give a path to an individual taskpaper file or the root of a workspace containing taskpaper files
+    pathToWorkspace          root path of a workspace containing taskpaper files
+    workspaceName            the name you give to the workspace
+    pathToSyncFolder         path to the folder you wish to sync the index task files into
     -h, --help               show this help message
     -v, --version            show version
     -s, --settings           the settings file
@@ -31,6 +35,7 @@ from docopt import docopt
 from fundamentals import tools, times
 from subprocess import Popen, PIPE, STDOUT
 from . import workspace
+from . import sync as syncc
 # from ..__init__ import *
 
 
@@ -96,6 +101,16 @@ def main(arguments=None):
         ws.sort()
     if archive:
         ws.archive_done()
+
+    if sync:
+        tp = syncc(
+            log=log,
+            settings=settings,
+            workspaceRoot=pathToWorkspace,
+            workspaceName=workspaceName,
+            syncFolder=pathToSyncFolder
+        )
+        tp.sync()
 
     if "dbConn" in locals() and dbConn:
         dbConn.commit()
