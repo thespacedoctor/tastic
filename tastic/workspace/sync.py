@@ -1,7 +1,7 @@
 #!/usr/local/bin/python
 # encoding: utf-8
 """
-*generate overview taskpaper documents containing all projects and tasks tagged with a workflow tag within an entire workspace. There is also an option to sync with Apple Reminders.*
+*generate overview taskpaper documents containing tasks tagged with a sync-tags set within an entire workspace. There is also an option to sync with Apple Reminders (not implemented yet).*
 
 :Author:
     David Young
@@ -9,16 +9,13 @@
 :Date Created:
     November 15, 2016
 """
-################# GLOBAL IMPORTS ####################
 import sys
 import os
 import codecs
 os.environ['TERM'] = 'vt100'
 from fundamentals import tools
 from tastic.tastic import document
-
-# OR YOU CAN REMOVE THE CLASS BELOW AND ADD A WORKER FUNCTION ... SNIPPET TRIGGER BELOW
-# xt-worker-def
+from fundamentals.files import recursive_directory_listing
 
 
 class sync():
@@ -38,19 +35,21 @@ class sync():
 
         To initiate a sync object, use the following:
 
-        .. todo::
-
-            - add usage info
-            - create a sublime snippet for usage
-            - update the package tutorial if needed
-
         .. code-block:: python 
 
-            usage code   
+            from tastic.workspace import sync
+            tp = sync(
+                log=log,
+                settings=settings,
+                workspaceRoot="/path/to/workspace/root",
+                workspaceName="myWorkspace",
+                syncFolder="/path/to/sync/folder"
+            )
+            tp.sync()
+
+        After this it is simply a matter of running `tp.sync()` to sync the sync-tag set into a taskpaper document in the syncFolder called `<workspaceName>-synced-tasks.taskpaper`
     """
-    # Initialisation
-    # 1. @flagged: what are the unique attrributes for each object? Add them
-    # to __init__
+    # INITIALISATION
 
     def __init__(
             self,
@@ -61,7 +60,7 @@ class sync():
             settings=False
     ):
         self.log = log
-        log.debug("instansiating a new 'sync' object")
+        self.log.debug("instansiating a new 'sync' object")
         self.settings = settings
         self.workspaceRoot = workspaceRoot
         self.syncFolder = syncFolder
@@ -73,14 +72,8 @@ class sync():
 
         # xt-self-arg-tmpx
 
-        # 2. @flagged: what are the default attrributes each object could have? Add them to variable attribute set here
-        # Variable Data Atrributes
-
-        # 3. @flagged: what variable attrributes need overriden in any baseclass(es) used
-        # Override Variable Data Atrributes
-
-        # Initial Actions
-        # Recursively create missing directories
+        # INITIAL ACTIONS
+        # RECURSIVELY CREATE MISSING DIRECTORIES - FOR SYNCED TASKPAPER DOCS
         if not os.path.exists(self.syncFolder):
             os.makedirs(self.syncFolder)
 
@@ -88,35 +81,28 @@ class sync():
 
     def sync(self):
         """
-        *sync the sync object*
+        *sync the tasks tagged with a tag in the sync-tags set to index taskpaper document and HTML page*
 
         **Return:**
-            - ``sync``
+            - None
 
-        **Usage:**
-        .. todo::
+        see class docsting for usage
 
-            - add usage info
-            - create a sublime snippet for usage
-            - update the package tutorial if needed
-
-        .. code-block:: python 
-
-            usage code 
         """
         self.log.info('starting the ``sync`` method')
 
         taskpaperFiles = self._get_all_taskpaper_files(self.workspaceRoot)
 
-        content = self.get_tagged_content_from_taskpaper_files(taskpaperFiles)
-        taskpaperDocPath = self.create_single_taskpaper_task_list(content)
+        content = self._get_tagged_content_from_taskpaper_files(taskpaperFiles)
+        taskpaperDocPath = self._create_single_taskpaper_task_list(content)
+        self._create_html_tasklist(taskpaperDocPath)
 
-        # self.generate_sync_documents()
+        # self._generate_sync_documents()
 
         self.log.info('completed the ``sync`` method')
         return None
 
-    def generate_sync_documents(
+    def _generate_sync_documents(
             self):
         """*generate sync documents*
 
@@ -138,7 +124,7 @@ class sync():
                 usage code 
 
         """
-        self.log.info('starting the ``generate_sync_documents`` method')
+        self.log.info('starting the ``_generate_sync_documents`` method')
 
         for tag in self.syncTags:
             pathToWriteFile = self.syncFolder + "/" + tag + ".taskpaper"
@@ -154,24 +140,22 @@ class sync():
 
             writeFile.close()
 
-        self.log.info('completed the ``generate_sync_documents`` method')
+        self.log.info('completed the ``_generate_sync_documents`` method')
         return None
 
     def _get_all_taskpaper_files(
             self,
             workspaceRoot):
-        """*get a list of all the taskpaper filepaths in the workspace*
+        """*get a list of all the taskpaper filepaths in the workspace (excluding the sync directory)*
 
         **Key Arguments:**
             - ``workspaceRoot`` -- path to the root folder of a workspace containing taskpaper files
-            -
 
         **Return:**
             - ``taskpaperFiles`` -- a list of paths to all the taskpaper files within the workspace
         """
         self.log.info('starting the ``_get_all_taskpaper_files`` method')
 
-        from fundamentals.files import recursive_directory_listing
         theseFiles = recursive_directory_listing(
             log=self.log,
             baseFolderPath=self.workspaceRoot,
@@ -180,37 +164,24 @@ class sync():
 
         taskpaperFiles = []
         taskpaperFiles[:] = [f for f in theseFiles if os.path.splitext(f)[
-            1] == ".taskpaper"]
+            1] == ".taskpaper" and f != self.syncFolder]
 
         self.log.info('completed the ``_get_all_taskpaper_files`` method')
         return taskpaperFiles
 
-    def get_tagged_content_from_taskpaper_files(
+    def _get_tagged_content_from_taskpaper_files(
             self,
             taskpaperFiles):
-        """*get tagged content from taskpaper files*
+        """*get all tasks tagged with a sync-tag from taskpaper files*
 
         **Key Arguments:**
-            - ``tag`` -- the tag to search for
             - ``taskpaperFiles`` -- paths to all taskpaper files in workspace
 
         **Return:**
-            - ``content`` -- the given tagged content of all taskpaper files in a workspace
-
-        **Usage:**
-            ..  todo::
-
-                - add usage info
-                - create a sublime snippet for usage
-                - update package tutorial if needed
-
-            .. code-block:: python 
-
-                usage code 
-
+            - ``content`` -- the given tagged content of all taskpaper files in a workspace (string)
         """
         self.log.info(
-            'starting the ``get_tagged_content_from_taskpaper_files`` method')
+            'starting the ``_get_tagged_content_from_taskpaper_files`` method')
 
         content = ""
         for tp in taskpaperFiles:
@@ -230,10 +201,10 @@ class sync():
                         content += ft.to_string() + "\n"
 
         self.log.info(
-            'completed the ``get_tagged_content_from_taskpaper_files`` method')
+            'completed the ``_get_tagged_content_from_taskpaper_files`` method')
         return content
 
-    def create_single_taskpaper_task_list(
+    def _create_single_taskpaper_task_list(
             self,
             content):
         """*create single, sorted taskpaper task list from content pulled in from all of the workspace taskpaper docs*
@@ -243,25 +214,14 @@ class sync():
 
         **Return:**
             - ``taskpaperDocPath`` -- path to the task index taskpaper doc
-
-        **Usage:**
-            ..  todo::
-
-                - add usage info
-                - create a sublime snippet for usage
-                - update package tutorial if needed
-
-            .. code-block:: python 
-
-                usage code 
-
         """
         self.log.info(
-            'starting the ``create_single_taskpaper_task_list`` method')
+            'starting the ``_create_single_taskpaper_task_list`` method')
 
         if len(content):
             content = content.decode("utf-8")
-            taskpaperDocPath = self.syncFolder + "/" + self.workspaceName + ".taskpaper"
+            taskpaperDocPath = self.syncFolder + "/" + \
+                self.workspaceName + "-synced-tasks.taskpaper"
             try:
                 self.log.debug("attempting to open the file %s" %
                                (taskpaperDocPath,))
@@ -275,20 +235,84 @@ class sync():
             writeFile.close()
             # OPEN TASKPAPER FILE
             doc = document(self.syncFolder + "/" +
-                           self.workspaceName + ".taskpaper")
+                           self.workspaceName + "-synced-tasks.taskpaper")
             doc.sort_projects(workflowTags=self.workflowTags)
             doc.sort_tasks(workflowTags=self.workflowTags)
             doc.save()
 
         self.log.info(
-            'completed the ``create_single_taskpaper_task_list`` method')
+            'completed the ``_create_single_taskpaper_task_list`` method')
         return taskpaperDocPath
+
+    def _create_html_tasklist(
+            self,
+            taskpaperDocPath):
+        """*create an html version of the single taskpaper index task list*
+
+        **Key Arguments:**
+            - ``taskpaperDocPath`` -- path to the task index taskpaper doc
+
+        **Return:**
+            - ``htmlFilePath`` -- the path to the output HTML file
+        """
+        self.log.info('starting the ``_create_html_tasklist`` method')
+
+        title = self.workspaceName
+        content = "<h1>%(title)s tasks</h1><ul>\n" % locals()
+
+        # OPEN TASKPAPER FILE
+        doc = document(taskpaperDocPath)
+        docTasks = doc.tasks
+
+        for task in docTasks:
+
+            tagString = " ".join(task.tags)
+            tagString2 = ""
+            for t in task.tags:
+                tagString2 += """ <span class="%(t)s tag">@%(t)s</span>""" % locals()
+
+            notes = task.notes
+            filepath = notes[0].title.split(" > ")[0]
+            basename = os.path.basename(filepath).replace(
+                ".taskpaper", "").replace("-", " ")
+            filepath = "dryx-open://" + filepath
+            taskTitle = u"""<a href="%(filepath)s"><span class="bullet %(tagString)s">◉</span> </a>""" % locals() + \
+                task.title[2:] + tagString2
+
+            if len(notes[0].title.split(" > ")) > 1:
+                parent = notes[0].title.split(" > ")[1]
+                parent = """<span class="parent">%(basename)s > %(parent)s</span></br>\n""" % locals(
+                )
+            else:
+                parent = """<span class="parent">%(basename)s</span></br>\n""" % locals(
+                )
+            taskContent = """</span>\n\t\t</br><span class="notes">""".join(task.to_string(
+                title=False, indentLevel=0).split("\n")[1:])
+            if len(taskContent):
+                taskContent = """\n\t<br><span class="notes">""" + \
+                    taskContent + """\n\t</span>"""
+            else:
+                taskContent = ""
+
+            htmlTask = """<li class="XXX">%(parent)s%(taskTitle)s%(taskContent)s</li>\n"""  % locals()
+            content += htmlTask
+
+        content += "</ul>"
+
+        htmlFilePath = taskpaperDocPath.replace(".taskpaper", ".html")
+        try:
+            self.log.debug("attempting to open the file %s" % (htmlFilePath,))
+            writeFile = codecs.open(
+                htmlFilePath, encoding='utf-8', mode='w')
+        except IOError, e:
+            message = 'could not open the file %s' % (htmlFilePath,)
+            self.log.critical(message)
+            raise IOError(message)
+        writeFile.write(content)
+        writeFile.close()
+
+        self.log.info('completed the ``_create_html_tasklist`` method')
+        return htmlFilePath
 
     # use the tab-trigger below for new method
     # xt-class-method
-
-    # 5. @flagged: what actions of the base class(es) need ammending? ammend them here
-    # Override Method Attributes
-    # method-override-tmpx
-
-    # newContent = "- [%(title)s](dryx-open://%(tp)s) %(theseTags)s  \n" % locals()
