@@ -92,8 +92,10 @@ class sync():
         self.log.info('starting the ``sync`` method')
 
         taskpaperFiles = self._get_all_taskpaper_files(self.workspaceRoot)
+        self._complete_original_tasks()
 
         content = self._get_tagged_content_from_taskpaper_files(taskpaperFiles)
+
         taskpaperDocPath = self._create_single_taskpaper_task_list(content)
         self._create_html_tasklist(taskpaperDocPath)
 
@@ -313,6 +315,52 @@ class sync():
 
         self.log.info('completed the ``_create_html_tasklist`` method')
         return htmlFilePath
+
+    def _complete_original_tasks(
+            self):
+        """*mark original tasks as completed if they are marked as complete in the index taskpaper document*
+        """
+        self.log.info('starting the ``_complete_original_tasks`` method')
+
+        taskpaperDocPath = self.syncFolder + "/" + \
+            self.workspaceName + "-synced-tasks.taskpaper"
+        exists = os.path.exists(taskpaperDocPath)
+        if not exists:
+            return
+
+        # OPEN TASKPAPER INDEX FILE
+        doc = document(taskpaperDocPath)
+        doneTasks = doc.tagged_tasks("@done")
+
+        for t in doneTasks:
+            theseNotes = t.notes
+            parent = t.parent
+            while not len(theseNotes) and parent and parent.parent:
+                theseNotes = parent.notes
+                parent = parent.parent
+
+            originalFile = theseNotes[0].title.split(" > ")[0].strip()
+            if len(theseNotes[0].title.split(" > ")) > 1:
+                projectName = theseNotes[0].title.split(" > ")[1].strip()
+            else:
+                projectName = False
+
+            odoc = document(originalFile)
+            odoc.tidy()
+            odoc.save()
+            odoc = document(originalFile)
+            if projectName:
+                thisObject = odoc.get_project(projectName)
+            else:
+                thisObject = odoc
+
+            oTask = thisObject.get_task(t.title)
+            if oTask:
+                oTask.done("all")
+                odoc.save()
+
+        self.log.info('completed the ``_complete_original_tasks`` method')
+        return None
 
     # use the tab-trigger below for new method
     # xt-class-method
