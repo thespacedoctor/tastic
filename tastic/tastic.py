@@ -289,24 +289,27 @@ class baseClass():
             self.refresh
         except:
             pass
+
+        # SEARCH TASKS
         for t in self.tasks:
             if t.title.lower() == taskName.lower() and task == None:
                 task = t
                 break
 
+        # SEARCH TASK CONTENTS
         if task == None:
-            for p in self.projects:
-                p.refresh
-                for t in p.tasks:
-                    if t.title.lower() == taskName.lower() and task == None:
-                        task = t
-                        break
+            for t in self.tasks:
+                task = t.get_task(taskName)
+                if task:
+                    break
 
-        if task == None:
+        # SEARCH PROJECT CONTENTS
+        if task == None and "<Task " not in self.__repr__():
             for p in self.projects:
                 task = p.get_task(taskName)
                 if task:
                     break
+
         return task
 
     def to_string(
@@ -750,6 +753,10 @@ class baseClass():
                 regex = re.compile(r'\s*?\n\s*?\n')
                 while "\n\n" in self.content:
                     self.content = regex.sub("\n", self.content)
+
+        if not self.parent:
+            self.content = self.to_string(
+                indentLevel=0, title=False)
         return None
 
     def add_project(
@@ -860,6 +867,7 @@ class baseClass():
 
             thisOldContent = self.to_string(indentLevel=1)
             thisNewContent = thisOldContent.replace(uoldContent, unewContent)
+
             self.content = self.to_string(
                 indentLevel=0, title=False).replace(oldContent, newContent)
 
@@ -981,8 +989,6 @@ class baseClass():
             newContent=newContent
         )
 
-        self.tags = ["done(%(now)s)" % locals()]
-
         if depth == "all":
             try:
                 for t in self.tasks:
@@ -995,6 +1001,8 @@ class baseClass():
                     t.done("all")
             except:
                 pass
+
+        self.content = self.to_string(indentLevel=0, title=False)
 
         self.refresh
 
@@ -1083,7 +1091,6 @@ class baseClass():
         self.content = self.content.replace(self.to_string(indentLevel=0, title=False), self.to_string(
             indentLevel=0, title=False, tasks=self.tasks + newTask))
 
-        print self.parent
         doc = self
         while doc.parent:
             doc = doc.parent
@@ -1097,7 +1104,6 @@ class baseClass():
         if not parent:
             parent = doc.get_task(self.title)
 
-        print parent
         thisTask = parent.get_task(title)
 
         self.refresh
@@ -1370,7 +1376,9 @@ class task(baseClass):
                 replace = t
         if not replace:
             return
+
         self.tags = replace.tags
+
         self.notes = replace.notes
         self.tasks = replace.tasks
 
