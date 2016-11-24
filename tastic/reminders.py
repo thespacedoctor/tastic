@@ -226,10 +226,7 @@ class reminders():
             tell application "Reminders"
                 -- Loop thru reminders in the targeted reminder.app list
                 tell list "%(listName)s"
-                    set theTasks to every reminder
-                    repeat with theTask in theTasks
-                            delete theTask
-                    end repeat
+                    delete every reminder
                 end tell
             end tell
         """ % locals()

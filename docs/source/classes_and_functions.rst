@@ -4,6 +4,7 @@
 .. autosummary::
    :nosignatures:
 
+   tastic.reminders
    tastic.workspace.sync
    tastic.workspace.workspace
    tastic.tastic.baseClass
