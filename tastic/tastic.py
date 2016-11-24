@@ -1215,7 +1215,7 @@ class document(baseClass):
         content = readFile.read().replace("    ", "\t")
         readFile.close()
 
-        return content.encode("utf-8")
+        return content
 
     @property
     def tags(self):
@@ -1271,15 +1271,6 @@ class document(baseClass):
 
         import codecs
         # SET ENCODE ERROR RETURN VALUE
-
-        def handler(e):
-            return (u' ', e.start + 1)
-        codecs.register_error('dryx', handler)
-
-        # RECODE INTO ASCII
-        udata = content.decode("utf-8")
-        content = udata.encode("ascii", "dryx")
-
         writeFile = codecs.open(self.filepath, encoding='utf-8', mode='w')
         writeFile.write(content)
         writeFile.close()
