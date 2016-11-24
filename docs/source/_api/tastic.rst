@@ -20,6 +20,7 @@ Submodules
 .. toctree::
 
    tastic.cl_utils
+   tastic.reminders
    tastic.tastic
    tastic.utKit
 
