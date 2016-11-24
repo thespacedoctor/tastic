@@ -29,11 +29,11 @@ class reminders():
 
     **Usage:**
 
-        To setup your logger, settings and database connections, please use the ``fundamentals`` package (`see tutorial here <http://fundamentals.readthedocs.io/en/latest/#tutorial>`_). 
+        To setup your logger, settings and database connections, please use the ``fundamentals`` package (`see tutorial here <http://fundamentals.readthedocs.io/en/latest/#tutorial>`_).
 
         To initiate a reminders object, use the following:
 
-        .. code-block:: python 
+        .. code-block:: python
 
             from tastic import reminders
             r = reminders(
@@ -72,7 +72,7 @@ class reminders():
 
             The following will import tasks from a Reminder.app list into a taskpaper document. Tasks are added to any existing content in the taskpaper document, or if the docuement doesn't yet exist it will be created for you. Tasks are deleted from the remainds list once import is complete.
 
-            .. code-block:: python 
+            .. code-block:: python
 
                 r.import_list(
                     listName="listname",
@@ -87,9 +87,9 @@ class reminders():
             pathToTaskpaperDoc=pathToTaskpaperDoc,
             taskString=newTasks
         )
-        self._delete_reminders_from_list(
-            listName=listName
-        )
+        # self._delete_reminders_from_list(
+        #     listName=listName
+        # )
 
         self.log.info('completed the ``import_list`` method')
         return newTasks
@@ -151,7 +151,7 @@ class reminders():
         p = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
         stdout, stderr = p.communicate()
         self.log.debug('output: %(stdout)s' % locals())
-        newTasks = stdout
+        newTasks = stdout.decode("utf-8")
         if len(stderr):
             self.log.error(stderr)
             sys.exit(0)
