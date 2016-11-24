@@ -1212,7 +1212,7 @@ class document(baseClass):
     def _get_raw_content(self):
 
         readFile = codecs.open(self.filepath, encoding='utf-8', mode='r')
-        content = readFile.read()
+        content = readFile.read().replace("    ", "\t")
         readFile.close()
 
         return content.encode("utf-8")
@@ -1235,7 +1235,7 @@ class document(baseClass):
         """
         return self._get_object(
             regex=re.compile(
-                r'((?<=\n)|(?<=^))(?P<title>\[Searches\]:) *(?P<tagString>( *?@\S*(\(.*?\))?)+)?(?P<content>(\n( |\t).*)*)', re.UNICODE),
+                r'((?<=\n)|(?<=^))(?P<title>\[Searches\]:) *(?P<tagString>( *?@\S*(\(.*?\))?)+)?(?P<content>(\n(    |\t).*)*)', re.UNICODE),
             objectType="searchBlock",
             content=None
         )
