@@ -87,9 +87,9 @@ class reminders():
             pathToTaskpaperDoc=pathToTaskpaperDoc,
             taskString=newTasks
         )
-        # self._delete_reminders_from_list(
-        #     listName=listName
-        # )
+        self._delete_reminders_from_list(
+            listName=listName
+        )
 
         self.log.info('completed the ``import_list`` method')
         return newTasks
