@@ -13,6 +13,7 @@ import sys
 import os
 import codecs
 os.environ['TERM'] = 'vt100'
+import urllib
 from fundamentals import tools
 from tastic.tastic import document
 from fundamentals.files import recursive_directory_listing
@@ -28,14 +29,15 @@ class sync():
         - ``workspaceRoot`` -- path to the root folder of a workspace containing taskpaper files
         - ``workspaceName`` -- the name of the workspace
         - ``syncFolder`` -- path to a folder to host your synced tag taskpaper documents.
+        - ``editorialRootPath`` -- the root path of editorial's dropbox sync folder. Default *False*
 
     **Usage:**
 
-        To setup your logger, settings and database connections, please use the ``fundamentals`` package (`see tutorial here <http://fundamentals.readthedocs.io/en/latest/#tutorial>`_). 
+        To setup your logger, settings and database connections, please use the ``fundamentals`` package (`see tutorial here <http://fundamentals.readthedocs.io/en/latest/#tutorial>`_).
 
         To initiate a sync object, use the following:
 
-        .. code-block:: python 
+        .. code-block:: python
 
             from tastic.workspace import sync
             tp = sync(
@@ -57,7 +59,8 @@ class sync():
             workspaceRoot,
             workspaceName,
             syncFolder,
-            settings=False
+            settings=False,
+            editorialRootPath=False
     ):
         self.log = log
         self.log.debug("instansiating a new 'sync' object")
@@ -69,6 +72,7 @@ class sync():
         self.syncTags = []
         self.syncTags[:] = ["@" + s.strip() for s in syncTags]
         self.workspaceName = workspaceName
+        self.editorialRootPath = editorialRootPath
 
         # xt-self-arg-tmpx
 
@@ -79,7 +83,9 @@ class sync():
 
         return None
 
-    def sync(self):
+    def sync(
+        self
+    ):
         """
         *sync the tasks tagged with a tag in the sync-tags set to index taskpaper document and HTML page*
 
@@ -94,7 +100,8 @@ class sync():
         taskpaperFiles = self._get_all_taskpaper_files(self.workspaceRoot)
         self._complete_original_tasks()
 
-        content = self._get_tagged_content_from_taskpaper_files(taskpaperFiles)
+        content = self._get_tagged_content_from_taskpaper_files(
+            taskpaperFiles)
 
         taskpaperDocPath = self._create_single_taskpaper_task_list(content)
         self._create_html_tasklist(taskpaperDocPath)
@@ -121,9 +128,9 @@ class sync():
                 - create a sublime snippet for usage
                 - update package tutorial if needed
 
-            .. code-block:: python 
+            .. code-block:: python
 
-                usage code 
+                usage code
 
         """
         self.log.info('starting the ``_generate_sync_documents`` method')
@@ -173,11 +180,13 @@ class sync():
 
     def _get_tagged_content_from_taskpaper_files(
             self,
-            taskpaperFiles):
+            taskpaperFiles,
+            editorial=False):
         """*get all tasks tagged with a sync-tag from taskpaper files*
 
         **Key Arguments:**
             - ``taskpaperFiles`` -- paths to all taskpaper files in workspace
+            - ``editorial`` -- format links for editorial ios apps
 
         **Return:**
             - ``content`` -- the given tagged content of all taskpaper files in a workspace (string)
@@ -190,6 +199,10 @@ class sync():
             # OPEN TASKPAPER FILE
             doc = document(tp)
             basename = os.path.basename(tp).replace("-", " ").upper()
+            if self.editorialRootPath:
+                tp = urllib.quote(tp)
+                tp = tp.replace(
+                    self.editorialRootPath, "editorial://open") + "?root=dropbox"
 
             for tag in self.syncTags:
                 filteredTasks = doc.tagged_tasks(tag)
@@ -221,9 +234,13 @@ class sync():
             'starting the ``_create_single_taskpaper_task_list`` method')
 
         if len(content):
-            content = content.decode("utf-8")
-            taskpaperDocPath = self.syncFolder + "/" + \
-                self.workspaceName + "-synced-tasks.taskpaper"
+            # content = content.decode("utf-8")
+            if self.editorialRootPath:
+                taskpaperDocPath = self.syncFolder + "/e-" + \
+                    self.workspaceName + "-synced-tasks.taskpaper"
+            else:
+                taskpaperDocPath = self.syncFolder + "/" + \
+                    self.workspaceName + "-synced-tasks.taskpaper"
             try:
                 self.log.debug("attempting to open the file %s" %
                                (taskpaperDocPath,))
@@ -236,8 +253,12 @@ class sync():
             writeFile.write(content)
             writeFile.close()
             # OPEN TASKPAPER FILE
-            doc = document(self.syncFolder + "/" +
-                           self.workspaceName + "-synced-tasks.taskpaper")
+            if self.editorialRootPath:
+                doc = document(self.syncFolder + "/e-" +
+                               self.workspaceName + "-synced-tasks.taskpaper")
+            else:
+                doc = document(self.syncFolder + "/" +
+                               self.workspaceName + "-synced-tasks.taskpaper")
             doc.sort_projects(workflowTags=self.workflowTags)
             doc.sort_tasks(workflowTags=self.workflowTags)
             doc.save()
@@ -258,6 +279,9 @@ class sync():
             - ``htmlFilePath`` -- the path to the output HTML file
         """
         self.log.info('starting the ``_create_html_tasklist`` method')
+
+        if self.editorialRootPath:
+            return
 
         title = self.workspaceName
         content = "<h1>%(title)s tasks</h1><ul>\n" % locals()
@@ -322,8 +346,12 @@ class sync():
         """
         self.log.info('starting the ``_complete_original_tasks`` method')
 
-        taskpaperDocPath = self.syncFolder + "/" + \
-            self.workspaceName + "-synced-tasks.taskpaper"
+        if self.editorialRootPath:
+            taskpaperDocPath = self.syncFolder + "/e-" + \
+                self.workspaceName + "-synced-tasks.taskpaper"
+        else:
+            taskpaperDocPath = self.syncFolder + "/" + \
+                self.workspaceName + "-synced-tasks.taskpaper"
         exists = os.path.exists(taskpaperDocPath)
         if not exists:
             return
@@ -338,6 +366,12 @@ class sync():
             while not len(theseNotes) and parent and parent.parent:
                 theseNotes = parent.notes
                 parent = parent.parent
+
+            if self.editorialRootPath:
+                theseNotes[0].title = theseNotes[0].title.replace(
+                    "editorial://open", self.editorialRootPath).replace("?root=dropbox", "")
+                theseNotes[0].title = urllib.unquote(
+                    theseNotes[0].title).replace("%40", "@")
 
             originalFile = theseNotes[0].title.split(" > ")[0].strip()
             if len(theseNotes[0].title.split(" > ")) > 1:
