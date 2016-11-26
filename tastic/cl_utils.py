@@ -8,8 +8,8 @@ Usage:
     tastic init
     tastic sort <pathToFileOrWorkspace> [-s <pathToSettingsFile>]
     tastic archive <pathToFileOrWorkspace> [-s <pathToSettingsFile>]
-    tastic sync <pathToWorkspace> <workspaceName> <pathToSyncFolder> [-s <pathToSettingsFile>]
-    tastic reminders import <listName> <pathToTaskpaperDoc>
+    tastic sync <pathToWorkspace> <workspaceName> <pathToSyncFolder> [<editorialRootPath>] [-s <pathToSettingsFile>]
+    tastic reminders import <listName> <pathToTaskpaperDoc> 
 
 Options:
     init                     setup the tastic settings file for the first time
@@ -25,6 +25,7 @@ Options:
     workspaceName            the name you give to the workspace
     pathToSyncFolder         path to the folder you wish to sync the index task files into
     listName                 name of a reminders.app list (macOS only)
+    editorialRootPath        the root path of editorial's dropbox sync folder (add to generate an editorial URL for each task)
     -h, --help               show this help message
     -v, --version            show version
     -s, --settings           the settings file
@@ -117,7 +118,8 @@ def main(arguments=None):
             settings=settings,
             workspaceRoot=pathToWorkspace,
             workspaceName=workspaceName,
-            syncFolder=pathToSyncFolder
+            syncFolder=pathToSyncFolder,
+            editorialRootPath=editorialRootPath
         )
         tp.sync()
 
