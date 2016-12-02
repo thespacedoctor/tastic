@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # tastic documentation build configuration file, created by
-# sphinx-quickstart on Thu Nov 24 10:41:28 2016.
+# sphinx-quickstart on Mon Nov 28 13:58:18 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.

@@ -199,13 +199,71 @@ class sync():
             # OPEN TASKPAPER FILE
             doc = document(tp)
             basename = os.path.basename(tp).replace("-", " ").upper()
+            archive = doc.get_project("Archive")
+            if archive:
+                archive.delete()
+
+            fileTagged = False
+            done = False
+            for tag in self.syncTags:
+                tag = "@" + tag.replace("@", "")
+                if "/%(tag)s/" % locals() in tp:
+                    fileTagged = True
+                if "/@done/" in tp:
+                    done = True
+
+            if done:
+                continue
+
+            # GENERATE THE EDITORIAL FILE LINK
             if self.editorialRootPath:
                 tp = urllib.quote(tp)
                 tp = tp.replace(
                     self.editorialRootPath, "editorial://open") + "?root=dropbox"
 
             for tag in self.syncTags:
-                filteredTasks = doc.tagged_tasks(tag)
+                tag = "@" + tag.replace("@", "")
+
+                # DETERMINE THE SUBORDINATE/HIGH LEVEL TAGS
+                lesserTags = []
+                greaterTags = []
+                trumped = False
+                for t in self.syncTags:
+                    if t == tag:
+                        trumped = True
+                    if t != tag:
+                        if trumped:
+                            lesserTags.append(t)
+                        else:
+                            greaterTags.append(t)
+
+                # FOR DOCUMENT WITH THIS SYNC TAG
+                filteredTasks = []
+                if "/%(tag)s/" % locals() in tp:
+                    filteredTasks = doc.all_tasks()
+                    for ft in filteredTasks:
+                        trumped = False
+                        for t in ft.tags:
+                            if t in " ".join(greaterTags):
+                                trumped = True
+                        if not trumped:
+                            for t in lesserTags:
+                                ft.del_tag(t)
+                            ft.add_tag(tag)
+                elif not fileTagged:
+                    filteredProjects = doc.tagged_projects(tag)
+                    for p in filteredProjects:
+                        allTasks = p.all_tasks()
+                        for ft in filteredTasks:
+                            trumped = False
+                            for t in ft.tags:
+                                if t in " ".join(greaterTags):
+                                    trumped = True
+                            if not trumped:
+                                for t in lesserTags:
+                                    ft.del_tag(t)
+                                ft.add_tag(tag)
+                    filteredTasks = doc.tagged_tasks(tag)
                 for ft in filteredTasks:
                     if "done" not in "".join(ft.tags):
                         if "Project" in ft.parent.__repr__():
