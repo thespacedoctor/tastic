@@ -495,6 +495,44 @@ class baseClass():
 
         return tasksList
 
+    def all_tasks(
+            self):
+        """*return a flat list of all tasks contained within this taskpaper object*
+
+        **Return:**
+            - ``taskList`` -- a flat list of all tasks
+
+        **Usage:**
+
+            To return a flat list of all tasks recursively found with a taskpaper document object, use the following:
+
+            .. code-block:: python
+
+               allTasks = doc.all_tasks()
+               for t in allTasks:
+                    print t.title
+        """
+        self.refresh
+        tasksList = []
+        for t in self.tasks:
+            tasksList.append(t)
+            subtasks = t.all_tasks()
+            tasksList += subtasks
+
+        isProject = False
+        try:
+            this = self.projects
+            isProject = True
+        except:
+            pass
+
+        if isProject:
+            for p in self.projects:
+                subtasks = p.all_tasks()
+                tasksList += subtasks
+
+        return tasksList
+
     def sort_projects(
             self,
             workflowTags):
@@ -903,9 +941,47 @@ class baseClass():
                 aTask.add_tag("@due")
         """
 
+        if tag.replace("@", "") in self.tags:
+            return
+
         self.refresh
         oldContent = self.to_string(indentLevel=1)
         self.tags += [tag.replace("@", "")]
+        newContent = self.to_string(indentLevel=1)
+
+        # ADD DIRECTLY TO CONTENT IF THE PROJECT IS BEING ADDED SPECIFICALLY TO
+        # THIS OBJECT
+        self.parent._update_document_tree(
+            oldContent=oldContent,
+            newContent=newContent
+        )
+
+        self.refresh
+        return None
+
+    def del_tag(
+            self,
+            tag):
+        """*delete a tag this taskpaper object*
+
+        **Key Arguments:**
+            - ``tag`` -- the tag to delete to the object
+
+        **Usage:**
+
+            .. code-block:: python 
+
+                aTask.del_tag("@due")
+        """
+
+        if tag.replace("@", "") not in self.tags:
+            return
+
+        self.refresh
+        oldContent = self.to_string(indentLevel=1)
+        newTags = []
+        newTags[:] = [n for n in newTags if tag not in n]
+        self.tags = newTags
         newContent = self.to_string(indentLevel=1)
 
         # ADD DIRECTLY TO CONTENT IF THE PROJECT IS BEING ADDED SPECIFICALLY TO
@@ -1151,7 +1227,7 @@ class baseClass():
                 newContent=newContent
             )
 
-        self.notes = self.notes + newNote
+        self.notes = newNote + self.notes
         self.content = self.content.replace(self.to_string(indentLevel=0, title=False), self.to_string(
             indentLevel=0, title=False))
 
