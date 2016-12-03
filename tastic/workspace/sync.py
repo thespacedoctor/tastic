@@ -223,6 +223,7 @@ class sync():
 
             for tag in self.syncTags:
                 tag = "@" + tag.replace("@", "")
+                etag = "%40" + tag.replace("@", "")
 
                 # DETERMINE THE SUBORDINATE/HIGH LEVEL TAGS
                 lesserTags = []
@@ -239,7 +240,7 @@ class sync():
 
                 # FOR DOCUMENT WITH THIS SYNC TAG
                 filteredTasks = []
-                if "/%(tag)s/" % locals() in tp:
+                if "/%(tag)s/" % locals() in tp or "/%(etag)s/" % locals() in tp:
                     filteredTasks = doc.all_tasks()
                     for ft in filteredTasks:
                         trumped = False
