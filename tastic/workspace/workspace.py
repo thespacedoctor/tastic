@@ -262,12 +262,14 @@ class workspace():
 
             dictt["task"] = "<br>".join(textwrap.wrap(task.title[
                 2:], 120, break_long_words=True)) + notes
+            dictt["task"] = dictt["task"].encode("utf-8")
             dictt["completed"] = dateCompleted
             dictt["project"] = project
             taskLog[dictt["task"] + dictt["completed"] +
                     dictt["project"]] = dictt
 
         taskLog = taskLog.values()
+
         taskLog = sorted(taskLog, key=itemgetter('task'), reverse=True)
         taskLog = sorted(taskLog, key=itemgetter('project'), reverse=True)
         taskLog = sorted(taskLog, key=itemgetter('completed'), reverse=True)
