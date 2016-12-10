@@ -68,9 +68,17 @@ class sync():
         self.workspaceRoot = workspaceRoot
         self.syncFolder = syncFolder
         self.workflowTags = self.settings["workflowTags"]
-        syncTags = self.settings["syncTags"].replace("@", "").split(",")
-        self.syncTags = []
-        self.syncTags[:] = ["@" + s.strip() for s in syncTags]
+        syncTagSets = self.settings["syncTagSets"]
+        for k, v in syncTagSets.iteritems():
+            if not isinstance(v, list):
+                v = v.split(",")
+            clean = []
+            clean[:] = [c.strip() for c in v]
+            clean2 = []
+            clean2[:] = ["@" + vv.strip() for vv in clean]
+            syncTagSets[k] = clean
+
+        self.syncTagSets = syncTagSets
         self.workspaceName = workspaceName
         self.editorialRootPath = editorialRootPath
 
@@ -98,13 +106,18 @@ class sync():
         self.log.info('starting the ``sync`` method')
 
         taskpaperFiles = self._get_all_taskpaper_files(self.workspaceRoot)
-        self._complete_original_tasks()
+        for k, v in self.syncTagSets.iteritems():
+            self._complete_original_tasks(setName=k)
 
-        content = self._get_tagged_content_from_taskpaper_files(
-            taskpaperFiles)
-
-        taskpaperDocPath = self._create_single_taskpaper_task_list(content)
-        self._create_html_tasklist(taskpaperDocPath)
+        for k, v in self.syncTagSets.iteritems():
+            content = self._get_tagged_content_from_taskpaper_files(
+                taskpaperFiles,
+                tagSet=v
+            )
+            if content:
+                taskpaperDocPath = self._create_single_taskpaper_task_list(
+                    content, setName=k)
+                self._create_html_tasklist(taskpaperDocPath)
 
         # self._generate_sync_documents()
 
@@ -173,7 +186,7 @@ class sync():
 
         taskpaperFiles = []
         taskpaperFiles[:] = [f for f in theseFiles if os.path.splitext(f)[
-            1] == ".taskpaper" and f != self.syncFolder]
+            1] == ".taskpaper" and self.syncFolder not in f]
 
         self.log.info('completed the ``_get_all_taskpaper_files`` method')
         return taskpaperFiles
@@ -181,11 +194,13 @@ class sync():
     def _get_tagged_content_from_taskpaper_files(
             self,
             taskpaperFiles,
+            tagSet,
             editorial=False):
         """*get all tasks tagged with a sync-tag from taskpaper files*
 
         **Key Arguments:**
             - ``taskpaperFiles`` -- paths to all taskpaper files in workspace
+            - ``tagSet`` -- the tagset to extract from the taskpaper files.
             - ``editorial`` -- format links for editorial ios apps
 
         **Return:**
@@ -205,7 +220,7 @@ class sync():
 
             fileTagged = False
             done = False
-            for tag in self.syncTags:
+            for tag in tagSet:
                 tag = "@" + tag.replace("@", "")
                 if "/%(tag)s/" % locals() in tp:
                     fileTagged = True
@@ -221,7 +236,7 @@ class sync():
                 tp = tp.replace(
                     self.editorialRootPath, "editorial://open") + "?root=dropbox"
 
-            for tag in self.syncTags:
+            for tag in tagSet:
                 tag = "@" + tag.replace("@", "")
                 etag = "%40" + tag.replace("@", "")
 
@@ -229,7 +244,7 @@ class sync():
                 lesserTags = []
                 greaterTags = []
                 trumped = False
-                for t in self.syncTags:
+                for t in tagSet:
                     if t == tag:
                         trumped = True
                     if t != tag:
@@ -280,11 +295,13 @@ class sync():
 
     def _create_single_taskpaper_task_list(
             self,
-            content):
+            content,
+            setName):
         """*create single, sorted taskpaper task list from content pulled in from all of the workspace taskpaper docs*
 
         **Key Arguments:**
             - ``content`` -- the content to add to the taskpaper task index
+            - ``setName`` -- the name of the sync tag set
 
         **Return:**
             - ``taskpaperDocPath`` -- path to the task index taskpaper doc
@@ -292,14 +309,15 @@ class sync():
         self.log.info(
             'starting the ``_create_single_taskpaper_task_list`` method')
 
+        taskpaperDocPath = None
         if len(content):
             # content = content.decode("utf-8")
             if self.editorialRootPath:
                 taskpaperDocPath = self.syncFolder + "/e-" + \
-                    self.workspaceName + "-synced-tasks.taskpaper"
+                    self.workspaceName + "-" + setName + "-tasks.taskpaper"
             else:
                 taskpaperDocPath = self.syncFolder + "/" + \
-                    self.workspaceName + "-synced-tasks.taskpaper"
+                    self.workspaceName + "-" + setName + "-tasks.taskpaper"
             try:
                 self.log.debug("attempting to open the file %s" %
                                (taskpaperDocPath,))
@@ -314,10 +332,10 @@ class sync():
             # OPEN TASKPAPER FILE
             if self.editorialRootPath:
                 doc = document(self.syncFolder + "/e-" +
-                               self.workspaceName + "-synced-tasks.taskpaper")
+                               self.workspaceName + "-" + setName + "-tasks.taskpaper")
             else:
                 doc = document(self.syncFolder + "/" +
-                               self.workspaceName + "-synced-tasks.taskpaper")
+                               self.workspaceName + "-" + setName + "-tasks.taskpaper")
             doc.sort_projects(workflowTags=self.workflowTags)
             doc.sort_tasks(workflowTags=self.workflowTags)
             doc.save()
@@ -400,17 +418,21 @@ class sync():
         return htmlFilePath
 
     def _complete_original_tasks(
-            self):
+            self,
+            setName):
         """*mark original tasks as completed if they are marked as complete in the index taskpaper document*
+
+        **Key Arguments:**
+            - ``setName`` -- the name of the sync tag set
         """
         self.log.info('starting the ``_complete_original_tasks`` method')
 
         if self.editorialRootPath:
             taskpaperDocPath = self.syncFolder + "/e-" + \
-                self.workspaceName + "-synced-tasks.taskpaper"
+                self.workspaceName + "-" + setName + "-tasks.taskpaper"
         else:
             taskpaperDocPath = self.syncFolder + "/" + \
-                self.workspaceName + "-synced-tasks.taskpaper"
+                self.workspaceName + "-" + setName + "-tasks.taskpaper"
         exists = os.path.exists(taskpaperDocPath)
         if not exists:
             return
