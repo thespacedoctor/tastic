@@ -564,8 +564,12 @@ class baseClass():
                 doc.sort_projects("@due, @flag, @hold, @next, @someday, @wait")
         """
         self.refresh
-        workflowTagsLists = workflowTags.strip().replace(",", "").replace("@", "")
-        workflowTagsLists = workflowTagsLists.split(" ")
+        if not isinstance(workflowTags, list):
+            workflowTagsLists = workflowTags.strip().replace(",", "").replace("@", "")
+            workflowTagsLists = workflowTagsLists.split(" ")
+        else:
+            workflowTagsLists = []
+            workflowTagsLists[:] = [l.replace("@", "") for l in workflowTags]
         matchedProjects = collections.OrderedDict()
         unmatchedProjects = []
         for wt in workflowTagsLists:
@@ -650,8 +654,12 @@ class baseClass():
                 doc.sort_tasks("@due, @flag, @hold, @next, @someday, @wait")
         """
         self.refresh
-        workflowTagsLists = workflowTags.strip().replace(",", "").replace("@", "")
-        workflowTagsLists = workflowTagsLists.split(" ")
+        if not isinstance(workflowTags, list):
+            workflowTagsLists = workflowTags.strip().replace(",", "").replace("@", "")
+            workflowTagsLists = workflowTagsLists.split(" ")
+        else:
+            workflowTagsLists = []
+            workflowTagsLists[:] = [l.replace("@", "") for l in workflowTags]
         matchedTasks = collections.OrderedDict(sorted({}.items()))
         unmatchedTasks = []
 

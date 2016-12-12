@@ -67,7 +67,7 @@ class sync():
         self.settings = settings
         self.workspaceRoot = workspaceRoot
         self.syncFolder = syncFolder
-        self.workflowTags = self.settings["workflowTags"]
+        workflowTags = self.settings["workflowTags"]
         syncTagSets = self.settings["syncTagSets"]
         for k, v in syncTagSets.iteritems():
             if not isinstance(v, list):
@@ -77,6 +77,14 @@ class sync():
             clean2 = []
             clean2[:] = ["@" + vv.strip() for vv in clean]
             syncTagSets[k] = clean
+
+        if not isinstance(workflowTags, list):
+            workflowTags = workflowTags.split(",")
+        clean = []
+        clean[:] = [c.strip() for c in workflowTags]
+        clean2 = []
+        clean2[:] = ["@" + vv.strip() for vv in clean]
+        self.workflowTags = clean
 
         self.syncTagSets = syncTagSets
         self.workspaceName = workspaceName
@@ -260,13 +268,18 @@ class sync():
                 # DETERMINE THE SUBORDINATE/HIGH LEVEL TAGS
                 lesserTags = []
                 greaterTags = []
-                trumped = False
-                for t in tagSet:
+                if workflowTagSet:
+                    trumped = False
+                else:
+                    trumped = True
+
+                for t in self.workflowTags:
                     if t == tag:
                         trumped = True
                     if t != tag:
                         if trumped:
                             lesserTags.append(t)
+
                         else:
                             greaterTags.append(t)
 
