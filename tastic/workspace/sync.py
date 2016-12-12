@@ -110,9 +110,15 @@ class sync():
             self._complete_original_tasks(setName=k)
 
         for k, v in self.syncTagSets.iteritems():
+            workflowTagSet = False
+            for tag in v:
+                if tag in self.workflowTags:
+                    workflowTagSet = True
+
             content = self._get_tagged_content_from_taskpaper_files(
                 taskpaperFiles,
-                tagSet=v
+                tagSet=v,
+                workflowTagSet=workflowTagSet
             )
             if content:
                 taskpaperDocPath = self._create_single_taskpaper_task_list(
@@ -195,13 +201,15 @@ class sync():
             self,
             taskpaperFiles,
             tagSet,
-            editorial=False):
+            editorial=False,
+            workflowTagSet=False):
         """*get all tasks tagged with a sync-tag from taskpaper files*
 
         **Key Arguments:**
             - ``taskpaperFiles`` -- paths to all taskpaper files in workspace
             - ``tagSet`` -- the tagset to extract from the taskpaper files.
             - ``editorial`` -- format links for editorial ios apps
+            - ``workflowTagSet`` -- does the tag set contain workflow tags (if not skip the non-live project lists)
 
         **Return:**
             - ``content`` -- the given tagged content of all taskpaper files in a workspace (string)
@@ -211,6 +219,15 @@ class sync():
 
         content = ""
         for tp in taskpaperFiles:
+
+            done = False
+            if not workflowTagSet:
+                for tag in ["@next", "@hold", "@done", "@someday"]:
+                    if "/" + tag + "/" in tp:
+                        done = True
+            if done:
+                continue
+
             # OPEN TASKPAPER FILE
             doc = document(tp)
             basename = os.path.basename(tp).replace("-", " ").upper()
