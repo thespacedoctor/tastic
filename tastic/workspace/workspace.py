@@ -220,9 +220,9 @@ class workspace():
                     dictt = collections.OrderedDict(sorted({}.items()))
                     columns = l.split("|")
 
-                    dictt["task"] = columns[1].strip()
-                    dictt["completed"] = columns[2].strip()
-                    dictt["project"] = columns[3].strip()
+                    dictt["task"] = columns[1].strip().decode("utf-8")
+                    dictt["completed"] = columns[2].strip().decode("utf-8")
+                    dictt["project"] = columns[3].strip().decode("utf-8")
                     taskLog[dictt["task"] + dictt["completed"] +
                             dictt["project"]] = dictt
 
@@ -270,6 +270,8 @@ class workspace():
 
             # RECODE INTO ASCII
             dictt["task"] = dictt["task"].decode("utf-8")
+            dictt["completed"] = dictt["completed"].decode("utf-8")
+            dictt["project"] = dictt["project"].decode("utf-8")
             taskLog[dictt["task"] + dictt["completed"] +
                     dictt["project"]] = dictt
 
