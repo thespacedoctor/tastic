@@ -270,9 +270,6 @@ class workspace():
 
             # RECODE INTO ASCII
             dictt["task"] = dictt["task"].decode("utf-8")
-
-            print dictt["task"]
-            print dictt
             taskLog[dictt["task"] + dictt["completed"] +
                     dictt["project"]] = dictt
 
