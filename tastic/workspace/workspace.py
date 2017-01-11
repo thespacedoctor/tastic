@@ -265,6 +265,14 @@ class workspace():
             dictt["task"] = dictt["task"].encode("utf-8")
             dictt["completed"] = dateCompleted
             dictt["project"] = project
+
+            # SET ENCODE ERROR RETURN VALUE
+
+            # RECODE INTO ASCII
+            dictt["task"] = dictt["task"].decode("utf-8")
+
+            print dictt["task"]
+            print dictt
             taskLog[dictt["task"] + dictt["completed"] +
                     dictt["project"]] = dictt
 
