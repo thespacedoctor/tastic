@@ -402,7 +402,8 @@ class sync():
             tagString = " ".join(task.tags)
             tagString2 = ""
             for t in task.tags:
-                tagString2 += """ <span class="%(t)s tag">@%(t)s</span>""" % locals()
+                t1 = t.split("(")[0]
+                tagString2 += """ <span class="%(t1)s tag">@%(t)s</span>""" % locals()
 
             notes = task.notes
             filepath = notes[0].title.split(" > ")[0]
@@ -489,6 +490,10 @@ class sync():
                 projectName = theseNotes[0].title.split(" > ")[1].strip()
             else:
                 projectName = False
+
+            print originalFile
+            print projectName
+            print
 
             odoc = document(originalFile)
             odoc.tidy()
