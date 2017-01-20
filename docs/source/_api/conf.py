@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # tastic documentation build configuration file, created by
-# sphinx-quickstart on Mon Nov 28 13:58:18 2016.
+# sphinx-quickstart on Fri Jan 20 12:22:41 2017.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -53,7 +53,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'tastic'
-copyright = u'2016, Author'
+copyright = u'2017, Author'
 author = u'Author'
 
 # The version info for the project you're documenting, acts as replacement for

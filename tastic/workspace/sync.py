@@ -30,6 +30,7 @@ class sync():
         - ``workspaceName`` -- the name of the workspace
         - ``syncFolder`` -- path to a folder to host your synced tag taskpaper documents.
         - ``editorialRootPath`` -- the root path of editorial's dropbox sync folder. Default *False*
+        - ``includeFileTags`` -- if the tag is in the filepath (e.g. /@due/mytasks.taskpaper) include all items the file in that tag set. Default *True*
 
     **Usage:**
 
@@ -45,7 +46,8 @@ class sync():
                 settings=settings,
                 workspaceRoot="/path/to/workspace/root",
                 workspaceName="myWorkspace",
-                syncFolder="/path/to/sync/folder"
+                syncFolder="/path/to/sync/folder",
+                includeFileTags=True
             )
             tp.sync()
 
@@ -60,7 +62,8 @@ class sync():
             workspaceName,
             syncFolder,
             settings=False,
-            editorialRootPath=False
+            editorialRootPath=False,
+            includeFileTags=True
     ):
         self.log = log
         self.log.debug("instansiating a new 'sync' object")
@@ -89,6 +92,7 @@ class sync():
         self.syncTagSets = syncTagSets
         self.workspaceName = workspaceName
         self.editorialRootPath = editorialRootPath
+        self.includeFileTags = includeFileTags
 
         # xt-self-arg-tmpx
 
@@ -126,7 +130,8 @@ class sync():
             content = self._get_tagged_content_from_taskpaper_files(
                 taskpaperFiles,
                 tagSet=v,
-                workflowTagSet=workflowTagSet
+                workflowTagSet=workflowTagSet,
+                includeFileTags=self.includeFileTags
             )
             if content:
                 taskpaperDocPath = self._create_single_taskpaper_task_list(
@@ -210,7 +215,8 @@ class sync():
             taskpaperFiles,
             tagSet,
             editorial=False,
-            workflowTagSet=False):
+            workflowTagSet=False,
+            includeFileTags=True):
         """*get all tasks tagged with a sync-tag from taskpaper files*
 
         **Key Arguments:**
@@ -218,6 +224,7 @@ class sync():
             - ``tagSet`` -- the tagset to extract from the taskpaper files.
             - ``editorial`` -- format links for editorial ios apps
             - ``workflowTagSet`` -- does the tag set contain workflow tags (if not skip the non-live project lists)
+            - ``includeFileTags`` -- if the tag is in the filepath (e.g. /@due/mytasks.taskpaper) include all items the file in that tag set
 
         **Return:**
             - ``content`` -- the given tagged content of all taskpaper files in a workspace (string)
@@ -246,9 +253,10 @@ class sync():
             fileTagged = False
             done = False
             for tag in tagSet:
-                tag = "@" + tag.replace("@", "")
-                if "/%(tag)s/" % locals() in tp:
-                    fileTagged = True
+                if includeFileTags == True:
+                    tag = "@" + tag.replace("@", "")
+                    if "/%(tag)s/" % locals() in tp:
+                        fileTagged = True
                 if "/@done/" in tp:
                     done = True
 
@@ -285,7 +293,7 @@ class sync():
 
                 # FOR DOCUMENT WITH THIS SYNC TAG
                 filteredTasks = []
-                if "/%(tag)s/" % locals() in tp or "/%(etag)s/" % locals() in tp:
+                if ("/%(tag)s/" % locals() in tp or "/%(etag)s/" % locals() in tp) and includeFileTags == True:
                     filteredTasks = doc.all_tasks()
                     for ft in filteredTasks:
                         trumped = False

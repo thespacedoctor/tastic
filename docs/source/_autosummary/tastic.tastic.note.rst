@@ -18,6 +18,8 @@ tastic.tastic.note (*class*)
       ~note.add_project
       ~note.add_tag
       ~note.add_task
+      ~note.all_tasks
+      ~note.del_tag
       ~note.done
       ~note.get_project
       ~note.get_task
