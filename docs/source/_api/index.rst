@@ -1,5 +1,5 @@
 .. tastic documentation master file, created by
-   sphinx-quickstart on Mon Nov 28 13:58:18 2016.
+   sphinx-quickstart on Fri Jan 20 12:22:41 2017.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 

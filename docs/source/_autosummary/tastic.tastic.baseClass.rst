@@ -18,6 +18,8 @@ tastic.tastic.baseClass (*class*)
       ~baseClass.add_project
       ~baseClass.add_tag
       ~baseClass.add_task
+      ~baseClass.all_tasks
+      ~baseClass.del_tag
       ~baseClass.done
       ~baseClass.get_project
       ~baseClass.get_task

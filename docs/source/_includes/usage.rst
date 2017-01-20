@@ -11,7 +11,7 @@ Command-Line Usage
         tastic init
         tastic sort <pathToFileOrWorkspace> [-s <pathToSettingsFile>]
         tastic archive <pathToFileOrWorkspace> [-s <pathToSettingsFile>]
-        tastic sync <pathToWorkspace> <workspaceName> <pathToSyncFolder> [<editorialRootPath>] [-s <pathToSettingsFile>]
+        tastic [-f] sync <pathToWorkspace> <workspaceName> <pathToSyncFolder> [<editorialRootPath>] [-s <pathToSettingsFile>]
         tastic reminders import <listName> <pathToTaskpaperDoc> 
     
     Options:
@@ -32,5 +32,6 @@ Command-Line Usage
         -h, --help               show this help message
         -v, --version            show version
         -s, --settings           the settings file
+        -f, --fileTags           if the tag to sync is in the filepath (e.g. /@due/mytasks.taskpaper) include all items the file in that tag set
     
     

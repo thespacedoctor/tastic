@@ -18,6 +18,8 @@ tastic.tastic.document (*class*)
       ~document.add_project
       ~document.add_tag
       ~document.add_task
+      ~document.all_tasks
+      ~document.del_tag
       ~document.done
       ~document.get_project
       ~document.get_task
