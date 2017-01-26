@@ -1,7 +1,7 @@
 Installation
 ============
 
-The easiest way to install tastic us to use ``pip``:
+The easiest way to install tastic is to use ``pip``:
 
 .. code:: bash
 
