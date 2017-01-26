@@ -499,10 +499,6 @@ class sync():
             else:
                 projectName = False
 
-            print originalFile
-            print projectName
-            print
-
             odoc = document(originalFile)
             odoc.tidy()
             odoc.save()
