@@ -36,7 +36,7 @@ shutil.copyfile(pathToInputDir + "/ssdr3.taskpaper",
                 pathToOutputDir + "/ssdr3.taskpaper")
 
 
-class test_tastic():
+class test_tastic(unittest.TestCase):
 
     # def test_doc_function(self):
 

@@ -33,7 +33,7 @@ shutil.copyfile(pathToInputDir + "/saturday-tasks.taskpaper",
                 pathToOutputDir + "/saturday-tasks.taskpaper")
 
 
-class test_tastic():
+class test_tastic(unittest.TestCase):
 
     def test_doc_function(self):
 

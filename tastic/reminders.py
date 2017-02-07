@@ -123,10 +123,10 @@ class reminders():
                             set dueDate to my date_time_to_iso(item itemNum of todoListDates)
                             set output to output & " @due(" & dueDate & ")"
                         end if
-                        set output to output & return
+                        set output to output & "\n"
                         if item itemNum of todoListNotes exists then
                             repeat with para in every paragraph of (item itemNum of todoListNotes)
-                                set output to (output & "    " & para as string) & return
+                                set output to (output & "    " & para as string) & "\n"
                             end repeat
                         end if
                     end repeat
@@ -147,16 +147,19 @@ class reminders():
                 return y & "-" & m & "-" & d & " " & h & ":" & min
             end date_time_to_iso
         """ % locals()
-        cmd = "\n".join(["osascript << EOT", applescript, "EOT"])
+        cmd = "\n".join(["osascript <<EOD", applescript, "EOD"])
         p = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
         stdout, stderr = p.communicate()
         self.log.debug('output: %(stdout)s' % locals())
+        print stdout
+        print
         newTasks = stdout.decode("utf-8")
         if len(stderr):
             self.log.error(stderr)
             sys.exit(0)
 
         self.log.info('completed the ``_get_tasks_from_reminder_list`` method')
+        print newTasks
         return newTasks
 
     def _add_tasks_to_taskpaper(
