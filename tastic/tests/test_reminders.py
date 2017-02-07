@@ -51,7 +51,7 @@ if not os.path.exists(pathToOutputDir):
 # xt-setup-unit-testing-files-and-folders
 
 
-class test_reminders():
+class test_reminders(unittest.TestCase):
 
     def test_reminders_function(self):
 

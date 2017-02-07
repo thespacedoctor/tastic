@@ -46,7 +46,7 @@ class utKit(utKit):
                 formatter: console_style
                 stream: ext://sys.stdout
         root:
-            level: WARNING
+            level: DEBUG
             handlers: [console]"""
 
         # Override Variable Data Atrributes
